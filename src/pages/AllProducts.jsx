@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react'
+import Navbar from "../features/navbar/Navbar";
 import MobileFilters from '../features/product/components/MobileFIlters'
 import Filters from '../features/product/components/Filters'
 import ProductList from '../features/product/components/ProductList'
@@ -59,7 +60,8 @@ function classNames(...classes) {
 export default function AllProducts() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
-  return (
+  return (<>
+    <Navbar/>
     <div className="bg-white">
       <div>
         {/* Mobile filter dialog */}
@@ -149,5 +151,6 @@ export default function AllProducts() {
         </main>
       </div>
     </div>
+    </>
   )
 }
