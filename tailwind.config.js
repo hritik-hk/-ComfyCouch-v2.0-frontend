@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateRows: {
+        '[auto,auto,1fr]': 'auto auto 1fr',
+      },
+    },
   },
-  plugins: [import('@tailwindcss/forms')],
+  plugins: [import('@tailwindcss/forms'),import('@tailwindcss/aspect-ratio')],
 }

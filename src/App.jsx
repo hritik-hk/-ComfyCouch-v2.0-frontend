@@ -5,6 +5,7 @@ import Signup from "./features/auth/components/Signup";
 import CartSidebar from "./features/cart/CartSidebar";
 import Cart from "./features/cart/Cart";
 import Checkout from "./pages/Checkout";
+import ProductDetails from "./pages/ProductDetails";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/checkout",
     element: <Checkout />,
+  },
+  {
+    path: "/productdetails",
+    element: <ProductDetails />,
   }
 ]);
 
