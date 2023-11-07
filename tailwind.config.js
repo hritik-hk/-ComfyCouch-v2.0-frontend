@@ -11,5 +11,5 @@ export default {
       },
     },
   },
-  plugins: [import('@tailwindcss/forms'),import('@tailwindcss/aspect-ratio')],
+  plugins: [import('@tailwindcss/forms'),import('@headlessui/tailwindcss')],
 }
