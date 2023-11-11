@@ -4,13 +4,13 @@ import StarRatings from "react-star-ratings";
 // import { useDispatch,useSelector } from "react-redux";
 
 export default function ProductCard({ item }) {
-  const { title, price, image, rating, count, brand } = item;
+  const { title, price, thumbnail, rating, count=123, brand } = item;
 
   // const cartItem={
   //   id:id,
   //   title:title,
   //   price:price,
-  //   image:image,
+  //   thumbnail:thumbnail,
   //   quantity:1
   // }
 
@@ -32,11 +32,11 @@ export default function ProductCard({ item }) {
     <div>
       <div className="border border-[#e4e4e4] h-[300px] mb-4 relative overflow-hidden group transition">
         <div className="w-full h-full flex justify-center items-center">
-          {/* image */}
+          {/* thumbnail */}
           <div className="w-[350px] flex justify-center items-center">
             <img
               className="max-h-[250px] group-hover:scale-110 transition duration-300"
-              src={image}
+              src={thumbnail}
               alt=""
             />
           </div>

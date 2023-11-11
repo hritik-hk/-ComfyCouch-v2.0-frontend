@@ -32,19 +32,18 @@ const filters = [
     id: 'category',
     name: 'Category',
     options: [
-      { value: 'new-arrivals', label: 'New Arrivals', checked: false },
-      { value: 'sale', label: 'Sale', checked: false },
-      { value: 'travel', label: 'Travel', checked: true },
-      { value: 'organization', label: 'Organization', checked: false },
-      { value: 'accessories', label: 'Accessories', checked: false },
+      { value: 'sofas-seating', label: 'Sofas & Seating', checked: false },
+      { value: 'chairs', label: 'Chairs', checked: false },
+      { value: 'home-decor', label: 'Home Decor', checked: true },
+      { value: 'lamps-lighting', label: 'Lamps & Lighting', checked: false }
     ],
   },
   {
-    id: 'size',
-    name: 'Size',
+    id: 'brands',
+    name: 'Brands',
     options: [
-      { value: '2l', label: '2L', checked: false },
-      { value: '6l', label: '6L', checked: false },
+      { value: 'woodsworth', label: 'Woodsworth', checked: false },
+      { value: 'Amberville ', label: 'Amberville', checked: false },
       { value: '12l', label: '12L', checked: false },
       { value: '18l', label: '18L', checked: false },
       { value: '20l', label: '20L', checked: false },

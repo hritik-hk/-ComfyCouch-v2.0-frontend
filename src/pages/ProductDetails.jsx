@@ -4,56 +4,106 @@ import { RadioGroup, Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 const product = {
-  name: "Rana velvet LHS Chaise Lounger In Yellow Colour",
-  price: "₹15,899",
-  rating: 4.3,
-  href: "#",
-  breadcrumbs: [{ id: 1, name: "Sofas", href: "#" }],
+  id: 1,
+  title: "Adria Fabric RHS Chaise Lounger in Bold Yellow Colour",
+  price: 15899,
+  rating: 3.5,
+  stock: 94,
+  brand: "Febonic",
+  category: "sofas",
+  thumbnail:
+    "https://ii1.pepperfry.com/media/catalog/product/a/d/1100x1210/adria-fabric-chaise-lounger-in-bold-yellow-colour-adria-fabric-chaise-lounger-in-bold-yellow-colour-xoe0y9.jpg",
   images: [
-    {
-      src: "https://ii1.pepperfry.com/media/catalog/product/r/a/1100x1210/rana-fabric-rhs-chaise-lounger-in-safforn-yellow-colour-rana-fabric-rhs-chaise-lounger-in-safforn-ye-ekw7oq.jpg",
-      alt: "Adria Fabric RHS Chaise Lounger",
-    },
-    {
-      src: "https://ii1.pepperfry.com/media/catalog/product/r/a/1100x1210/rana-fabric-rhs-chaise-lounger-in-safforn-yellow-colour-rana-fabric-rhs-chaise-lounger-in-safforn-ye-rblhxv.jpg",
-      alt: "sofa-dimention",
-    },
-    {
-      src: "https://ii1.pepperfry.com/media/catalog/product/r/a/1100x1210/rana-fabric-rhs-chaise-lounger-in-safforn-yellow-colour-rana-fabric-rhs-chaise-lounger-in-safforn-ye-wdo1qa.jpg",
-      alt: "sofa-angle",
-    },
-    {
-      src: "https://ii1.pepperfry.com/media/catalog/product/r/a/1100x1210/rana-fabric-rhs-chaise-lounger-in-safforn-yellow-colour-rana-fabric-rhs-chaise-lounger-in-safforn-ye-dwangr.jpg",
-      alt: "sofa-side",
-    },
+    "https://ii1.pepperfry.com/media/catalog/product/a/d/1100x1210/adria-fabric-chaise-lounger-in-bold-yellow-colour-adria-fabric-chaise-lounger-in-bold-yellow-colour-xoe0y9.jpg",
+    "https://ii1.pepperfry.com/media/catalog/product/a/d/1100x1210/adria-fabric-chaise-lounger-in-bold-yellow-colour-adria-fabric-chaise-lounger-in-bold-yellow-colour-pfnbbx.jpg",
+    "https://ii1.pepperfry.com/media/catalog/product/a/d/1100x1210/adria-fabric-chaise-lounger-in-bold-yellow-colour-adria-fabric-chaise-lounger-in-bold-yellow-colour-chqdl9.jpg",
+    "https://ii1.pepperfry.com/media/catalog/product/a/d/1100x1210/adria-fabric-chaise-lounger-in-bold-yellow-colour-adria-fabric-chaise-lounger-in-bold-yellow-colour-hvhaxw.jpg",
   ],
   colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
+    {
+      name: "Yellow",
+      class: "bg-yellow",
+      selectedClass: "ring-gray-400",
+    },
+    {
+      name: "Brown",
+      class: "bg-brown-200",
+      selectedClass: "ring-gray-400",
+    },
+    {
+      name: "Grey",
+      class: "bg-gray-900",
+      selectedClass: "ring-gray-900",
+    },
   ],
-  description:
-    "Furniture having intricate hand-painted details are individual unique pieces and may have slight distinctions and variance between the picture and actual product.",
-  highlights: [
-    "Hand cut and sewn locally",
-    "Dyed with our proprietary colors",
-    "Pre-washed & pre-shrunk",
-    "Ultra-soft 100% cotton",
+  productDetails: [
+    {
+      Brand: "Febonic",
+    },
+    {
+      Assembly: "Carpenter Assembly",
+    },
+    {
+      Dimensions_cm: "H 83.8 x W 185.4 x D 76.2",
+    },
+    {
+      Dimensions_in: "H 32 x W 73 x D 30",
+    },
+    {
+      Primary_Material: "Fabric",
+    },
+    {
+      Warranty: "12 Months' Warranty",
+    },
+    {
+      Weight: "30 KG",
+    },
   ],
-  details:
-    "Furniture having intricate hand-painted details are individual unique pieces and may have slight distinctions and variance between the picture and actual product.",
+  specifications: [
+    {
+      Brand_Warranty: "36 Months",
+    },
+    {
+      Frame_Material: "12MM Neem Hard Wood Plywood",
+    },
+    {
+      Disclaimers:
+        "Accessories shown in the image are only for representation and are not part of the product.Depending on your screen settings and resolution on your device there may be a slight variance in fabric color and wood polish of the image and actual product.Wood grains will vary from product to product in case of solid wood furniture Furniture having intricate hand-painted details are individual unique pieces and may have slight distinctions and variance between the picture and actual product",
+    },
+  ],
+  CustomerReviews: [
+    {
+      user_name: "PRANEET MOON",
+      review: "Found damage please initiate one to one replacement",
+      rating: 1,
+    },
+    {
+      user_name: "Ravindra Agane",
+      review: "Amazing Design, Built fore the compact houses",
+      rating: 5,
+    },
+    {
+      user_name: "Pushpa Srikar",
+      review: "Sofa was comfortable and i liked the design of sofa also",
+      rating: 4,
+    },
+    {
+      user_name: "Amey Hulsure",
+      review:
+        "The yellow color of this sofa cum bed is excellent. It serves its purpose well as a sofa when we have guests around and the bed is good and comfy for a sound sleep. I like how this bed also offers storage space for me to keep some home products. Got the right product at a worthy price.",
+      rating: 5,
+    },
+  ],
+  breadcrumbs: [{ id: 1, name: "Sofas", href: "#" }],
 };
-const reviews = { href: "#", average: 4, totalCount: 117 };
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-
 export default function ProductDetails() {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  const [selectedImg, setSelectedImg] = useState(product.images[0])
-
+  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  const [selectedImg, setSelectedImg] = useState(product.thumbnail);
 
   return (
     <div className="bg-white">
@@ -91,7 +141,7 @@ export default function ProductDetails() {
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600"
               >
-                {product.name}
+                {product.title}
               </a>
             </li>
           </ol>
@@ -102,57 +152,53 @@ export default function ProductDetails() {
           <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:px-8">
             <div className="w-rounded-md lg:block">
               <img
-                src={selectedImg.src}
-                alt={selectedImg.alt}
+                src={selectedImg}
+                alt={selectedImg}
                 className="h-full w-full"
               />
             </div>
-             
-                  <RadioGroup
-                    value={selectedImg}
-                    onChange={setSelectedImg}
-                    className="mt-4"
-                  >
-            <div className="mt-10 mx-auto grid grid-cols-4 gap-x-4 px-3">
-              {product.images.map((img, idx) => {
-                return (
-                  <div key={idx} className="">
-                  <RadioGroup.Option
-                          key={idx} //change to a uuid
-                          value={img}
-                          className={({ checked }) =>
-                            classNames(
-                              checked?"border-red-600 border-2":""
-                            )
-                          }
-                        >
-                    <img
-                      src={product.images[idx].src}
-                      alt={product.images[idx].alt}
-                      className="h-4/5 w-full object-cover object-bottom"
-                    />
-                    </RadioGroup.Option>
-                  </div>
-                );
-              })}
-            </div>
-            </RadioGroup>
 
+            <RadioGroup
+              value={selectedImg}
+              onChange={setSelectedImg}
+              className="mt-4"
+            >
+              <div className="mt-10 mx-auto grid grid-cols-4 gap-x-4 px-3">
+                {product.images.map((img, idx) => {
+                  return (
+                    <div key={idx} className="cursor-pointer">
+                      <RadioGroup.Option
+                        key={idx} //change to a uuid
+                        value={img}
+                        className={({ checked }) =>
+                          classNames(checked ? "border-red-600 border-2" : "")
+                        }
+                      >
+                        <img
+                          src={product.images[idx]}
+                          alt="product image"
+                          className="h-4/5 w-full object-cover object-bottom"
+                        />
+                      </RadioGroup.Option>
+                    </div>
+                  );
+                })}
+              </div>
+            </RadioGroup>
           </div>
-          
 
           {/* Product info */}
           <div className="mx-auto max-w-3xl px-4 pb-16 pt-10 sm:px-6 lg:px-8 lg:pb-24 lg:pt-16">
             <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
               <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                {product.name}
+                {product.title}
               </h1>
             </div>
 
             {/* Options */}
             <div className="mt-4 lg:row-span-3 lg:mt-0">
               <p className="text-3xl tracking-tight text-gray-900">
-                {product.price}
+                ₹{product.price}
               </p>
 
               {/* Reviews */}
@@ -166,12 +212,6 @@ export default function ProductDetails() {
                     starDimension="20px"
                     starSpacing="1px"
                   />
-                  <a
-                    href={reviews.href}
-                    className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                  >
-                    {reviews.totalCount} reviews
-                  </a>
                 </div>
               </div>
 
@@ -244,7 +284,7 @@ export default function ProductDetails() {
                 {({ open }) => (
                   <>
                     <Disclosure.Button className="flex w-full justify-between">
-                      <span>Specifications</span>
+                      <span>Highlights</span>
                       <ChevronDownIcon
                         className={`${
                           open ? "rotate-180 transform" : ""
