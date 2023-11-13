@@ -3,6 +3,7 @@ import Navbar from "../features/navbar/Navbar";
 import MobileFilters from '../features/product/components/MobileFIlters'
 import Filters from '../features/product/components/Filters'
 import ProductList from '../features/product/components/ProductList'
+import Pagination from '../features/common/Pagination';
 import {  Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/20/solid'
 
@@ -57,7 +58,14 @@ function classNames(...classes) {
 }
 
 export default function AllProducts() {
+
+  
+  const totalItems=27 //for testing UI only
+
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const [page, setPage] = useState(1)
+
+  const handlePage=(curr)=> setPage(curr)
 
   return (<>
     <Navbar/>
@@ -146,6 +154,12 @@ export default function AllProducts() {
               </div>
               </div>
             </div>
+            <Pagination
+            page={page}
+            setPage={setPage}
+            handlePage={handlePage}
+            totalItems={totalItems}
+          ></Pagination>
           </section>
         </main>
       </div>

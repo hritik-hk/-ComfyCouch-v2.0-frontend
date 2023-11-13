@@ -25,4 +25,6 @@ dist-ssr
 test.js
 
 # created by me
-data.json
+productsCollection.json
+variantsCollection.json
+
