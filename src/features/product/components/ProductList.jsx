@@ -6,12 +6,12 @@ import { Bars } from "react-loader-spinner";
 
 export default function ProductList() {
 
-  useEffect(() => {
-    dispatch(fetchAllProductAsync());
-  }, []);
-
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.productList);
+
+  useEffect(() => {
+    dispatch(fetchAllProductAsync());
+  }, [dispatch]);
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function ProductList() {
             </div>
           ) :
         products.map((item) => {
-          return <ProductCard key={item.id} item={item} />;
+          return <ProductCard key={item.variant_id} item={item} />;
         })}
     </>
   );
