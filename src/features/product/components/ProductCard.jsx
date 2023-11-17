@@ -1,13 +1,15 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 
 export default function ProductCard({ item }) {
-  const {title,thumbnail,price,rating,brand} = item
+  const {product_id,variant_id,title,thumbnail,price,rating,brand} = item
 
   const [show, setShow] = useState(false);
 
   return (
     <div>
+    <Link to={`/product-detail/${product_id}/${variant_id}`}>
       <div className="border border-[#e4e4e4] h-[300px] mb-4 relative overflow-hidden group transition">
         <div className="w-full h-full flex justify-center items-center">
           {/* thumbnail */}
@@ -20,11 +22,14 @@ export default function ProductCard({ item }) {
           </div>
         </div>
       </div>
+      </Link>
 
       {/* category, title ,price & add to cart button */}
       <div>
+      <Link to={`/product-detail/${product_id}/${variant_id}`}>
         <div className="tex-sm capitalize text-gray-500 mb-1">{brand}</div>
         <h2 className="font-semibold mb-1">{title}</h2>
+      </Link>
         <StarRatings
           rating={rating}
           starRatedColor="#ea580c"

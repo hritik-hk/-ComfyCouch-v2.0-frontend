@@ -18,6 +18,28 @@ export function fetchAllProducts() {
   });
 }
 
+export function fetchProductById({productID,variantID}) {
+    return new Promise((resolve, reject) => {
+      const getProductById = async () => {
+        try {
+          const res1 = await fetch("http://192.168.0.177:3004/products?product_id="+productID)
+          const res2 = await fetch("http://192.168.0.177:3004/variants?variant_id="+variantID)
+  
+          if (res1.ok && res2.ok) {
+            const productDetail = await res1.json();
+            const variantDetail= await res2.json();
+            resolve({...productDetail[0],...variantDetail[0]});
+          } else {
+            throw new Error("Something went wrong");
+          }
+        } catch (err) {
+          reject(err);
+        }
+      }
+      getProductById();
+    });
+  }
+
 export async function fetchProductsByFilter(filter) {
   console.log(filter);
   let queryString = "";
