@@ -8,23 +8,16 @@ import Checkout from "./pages/Checkout";
 import ProductDetails from "./pages/ProductDetails";
 import Protected from "./features/auth/components/Protected";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Notification from "./features/common/Notification";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Protected>
-        <div>Welcome to Homepage</div>
-      </Protected>
-    ),
+    element: <div>Welcome to Homepage</div>,
   },
   {
     path: "/products",
-    element: (
-      <Protected>
-        <AllProducts />
-      </Protected>
-    ),
+    element: <AllProducts />,
   },
   {
     path: "/login",
@@ -52,17 +45,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/product-detail/:productID/:variantID",
-    element: (
-      <Protected>
-        <ProductDetails />
-      </Protected>
-    ),
+    element: <ProductDetails />,
   },
 ]);
 
 function App() {
   return (
     <>
+      <Notification />
       <CartSidebar />
       <RouterProvider router={router} />
     </>
