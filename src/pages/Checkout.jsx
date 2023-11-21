@@ -1,65 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-//dummy products testing UI
-const products=[{
-    id:10,
-    name:'Muddha XXXL Leatherette Bean Bag with Beans in Navy Blue Colour',
-    imageSrc:'https://ii1.pepperfry.com/media/catalog/product/m/u/1100x1210/muddha-xxxl-leatherette-bean-bag-with-beans-in-navy-blue-colour-muddha-xxxl-leatherette-bean-bag-wit-ar6eal.jpg',
-    category:'bean bags',
-    brand:'Sattva',
-    rating:4,
-    count:320,
-    quantity: 1,
-    price:'2599'
-  
-  },
-  {
-    name:'Muddha XXXL Leatherette Bean Bag with Beans in Navy Blue Colour',
-    id:20,
-    imageSrc:'https://ii1.pepperfry.com/media/catalog/product/1/-/494x544/1-seater-manual-recliner-in-brown-colour-by-bantia-furniture-1-seater-manual-recliner-in-brown-colou-3hwtnq.jpg',
-    category:'bean bags',
-    brand:'Sattva',
-    rating:4,
-    count:320,
-    quantity:1,
-    price:'2599'
-  },
-  {
-    name:'Muddha XXXL Leatherette Bean Bag with Beans in Navy Blue Colour',
-    id:30,
-    imageSrc:'https://ii1.pepperfry.com/media/catalog/product/m/o/1250x625/montez-velvet-lhs-sectional-sofa--2---lounger--in-pink---beige-colour-montez-velvet-lhs-sectional-so-vgb5lt.jpg',
-    category:'bean bags',
-    brand:'Sattva',
-    rating:4,
-    count:320,
-    quantity: 1,
-    price:'2599'
-  },
-  {
-    name:'Muddha XXXL Leatherette Bean Bag with Beans in Navy Blue Colour',
-    id:40,
-    imageSrc:'https://ii1.pepperfry.com/media/catalog/product/i/m/494x544/impero-lhs-l-shape-sofa-with-adjustable-headrest-in-tan-colour-by-vittoria-impero-lhs-l-shape-sofa-w-4wl87r.jpg',
-    category:'bean bags',
-    brand:'Sattva',
-    rating:4,
-    count:320,
-    quantity: 1,
-    price:'2599'
-  },
-  {
-    name:'Muddha XXXL Leatherette Bean Bag with Beans in Navy Blue Colour',
-    id:50,
-    imageSrc:'https://ii1.pepperfry.com/media/catalog/product/m/u/1100x1210/muddha-xxxl-leatherette-bean-bag-with-beans-in-navy-blue-colour-muddha-xxxl-leatherette-bean-bag-wit-ar6eal.jpg',
-    category:'bean bags',
-    brand:'Sattva',
-    rating:4,
-    count:320,
-    quantity: 1,
-    price:'2599'
-  }
-  ]
 
   //dummy user for testing UI
   const user=
@@ -84,11 +27,19 @@ const products=[{
     }
   
 
-
-
-
 export default function Checkout(){
 
+  const dispatch=useDispatch()
+  const cartItems=useSelector(state=>state.cart.cartItems)
+  const totalAmount = cartItems.reduce(
+    (amount, item) => item.price * item.quantity + amount,
+    0
+  );
+  const totalItems = cartItems.reduce(
+    (total, item) => item.quantity + total,
+    0
+  );
+  
     const {
         register,
         handleSubmit,
@@ -98,8 +49,6 @@ export default function Checkout(){
 
       const [selectedAddress, setSelectedAddress] = useState(null);
       const [paymentMethod, setPaymentMethod] = useState(null);
-
-      const [items, setItems]=useState(products)
 
       const handleAddress = (e) => {
         console.log(e.target.value);
@@ -111,22 +60,7 @@ export default function Checkout(){
         setPaymentMethod(e.target.value);
       };
 
-      const handleQuantity = (e, item) => {
-        //add update cart dispatch logic here
-
-        const idx= items.findIndex((it=> it.id==item.id));
-        const updatedItems=[...items];
-        updatedItems[idx].quantity= e.target.value;
-        setItems(updatedItems);
-        
-      };
-
-      const handleRemove=(e,id) =>{
-        const updatedItems=items.filter((item)=> item.id!=id);
-        setItems(updatedItems);
-      }
-    
-
+   
     return(
         <>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -423,6 +357,8 @@ export default function Checkout(){
               </div>
             </div>
           </div>
+
+          {/* CART SUMMARY */}
           <div className="lg:col-span-2">
             <div className="mx-auto mt-12 bg-white max-w-7xl px-2 sm:px-2 lg:px-4">
               <div className="border-t border-gray-200 px-0 py-6 sm:px-0">
@@ -431,11 +367,11 @@ export default function Checkout(){
                 </h1>
                 <div className="flow-root">
                   <ul role="list" className="-my-6 divide-y divide-gray-200">
-                    {items.map((item) => (
-                      <li key={item.id} className="flex py-6">
+                    {cartItems.map((item) => (
+                      <li key={item.variantID} className="flex py-6">
                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                           <img
-                            src={item.imageSrc}
+                            src={item.thumbnail}
                             alt='image-alt'
                             className="h-full w-full object-cover object-center"
                           />
@@ -444,13 +380,11 @@ export default function Checkout(){
                         <div className="ml-4 flex flex-1 flex-col">
                           <div>
                             <div className="flex justify-between text-base font-medium text-gray-900">
-                              <h3>
-                                <a href='#'>
-                                  {item.name}
-                                </a>
+                              <h3 className="w-3/4">
+                                  {item.title}
                               </h3>
                               <p className="ml-4">
-                                ${item.price}
+                              ₹ {item.price.toLocaleString("en-IN")}
                               </p>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
@@ -459,32 +393,7 @@ export default function Checkout(){
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">
                             <div className="text-gray-500">
-                              <label
-                                htmlFor="quantity"
-                                className="inline mr-5 text-sm font-medium leading-6 text-gray-900"
-                              >
-                                Qty
-                              </label>
-                              <select
-                                onChange={(e) => handleQuantity(e, item)}
-                                value={item.quantity}
-                              >
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                              </select>
-                            </div>
-
-                            <div className="flex">
-                              <button
-                                onClick={(e) => handleRemove(e, item.id)}
-                                type="button"
-                                className="font-medium text-orange-600 hover:text-red-700"
-                              >
-                                Remove
-                              </button>
+                            Qty : {item.quantity}
                             </div>
                           </div>
                         </div>
@@ -497,11 +406,11 @@ export default function Checkout(){
               <div className="border-t border-gray-200 px-2 py-6 sm:px-2">
                 <div className="flex justify-between my-2 text-base font-medium text-gray-900">
                   <p>Subtotal</p>
-                  <p>$ {99937}</p>
+                  <p>₹ {totalAmount.toLocaleString("en-IN")}</p>
                 </div>
                 <div className="flex justify-between my-2 text-base font-medium text-gray-900">
                   <p>Total Items in Cart</p>
-                  <p>{6} items</p>
+                  <p>{totalItems} items</p>
                 </div>
                 <p className="mt-0.5 text-sm text-gray-500">
                   Shipping and taxes calculated at checkout.
@@ -517,7 +426,7 @@ export default function Checkout(){
                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                   <p>
                     or{' '}
-                    <Link to="/">
+                    <Link to="/products">
                       <button
                         type="button"
                         className="font-medium text-orange-600 hover:text-red-600"

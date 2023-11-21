@@ -20,7 +20,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function AllProducts() {
+export default function Products() {
   const totalItems = 27; //for testing UI only
 
   

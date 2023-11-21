@@ -16,7 +16,8 @@ export default function ProductCard({ item }) {
   function handleClick() {
     const cartItem = {
       title: title,
-      variant_id: variant_id,
+      productID:product_id,
+      variantID: variant_id,
       thumbnail: thumbnail,
       price:price,
       brand:brand,
@@ -26,7 +27,6 @@ export default function ProductCard({ item }) {
     dispatch(addToCartAsync(cartItem));
     if(error){
       displayNotification('something went wrong, plz try again', 'error')
-      
     }
     else{
       setShow((show) => !show)

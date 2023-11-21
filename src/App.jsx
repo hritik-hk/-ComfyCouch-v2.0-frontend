@@ -1,5 +1,5 @@
 import "./App.css";
-import AllProducts from "./pages/AllProducts";
+import Products from "./pages/Products";
 import Login from "./features/auth/components/Login";
 import Signup from "./features/auth/components/Signup";
 import CartPage from "./pages/CartPage";
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/products",
-    element: <AllProducts />,
+    element: <Products />,
   },
   {
     path: "/login",
@@ -60,7 +60,7 @@ function App() {
     if(user) {
       dispatch(fetchItemsByUserIdAsync(user.id))
     }
-  },[user])
+  },[dispatch,user])
 
   return (
     <>
