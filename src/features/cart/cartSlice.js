@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { addToCart, fetchItemsByUserId } from "./cartAPI"
+import { addToCart, fetchItemsByUserId, updateCart,deleteInCart } from "./cartAPI"
 
 
 export const addToCartAsync= createAsyncThunk(
@@ -15,6 +15,22 @@ export const fetchItemsByUserIdAsync= createAsyncThunk(
     'cart/fetchItemsByUserId',
     async (userId)=>{
         const data = await fetchItemsByUserId(userId)
+        return data
+    }
+)
+
+export const updateCartAsync= createAsyncThunk(
+    'cart/updateCart',
+    async (update)=>{
+        const data = await updateCart(update)
+        return data
+    }
+)
+
+export const deleteInCartAsync= createAsyncThunk(
+    'cart/deleteInCart',
+    async (update)=>{
+        const data = await deleteInCart(update)
         return data
     }
 )
@@ -49,6 +65,31 @@ export const cartSlice=createSlice({
             state.error=null
         })
         .addCase(fetchItemsByUserIdAsync.rejected,(state,action)=>{
+            state.status='idle'
+            state.error=action.error.message
+        })
+        .addCase(updateCartAsync.pending,(state)=>{
+            state.status='loading'
+        })
+        .addCase(updateCartAsync.fulfilled,(state,action)=>{
+            const index= state.cartItems.findIndex((item)=>item.id===action.payload.id)
+            state.cartItems[index]=action.payload
+            state.status='idle'
+            state.error=null
+        })
+        .addCase(updateCartAsync.rejected,(state,action)=>{
+            state.status='idle'
+            state.error=action.error.message
+        })
+        .addCase(deleteInCartAsync.pending,(state)=>{
+            state.status='loading'
+        })
+        .addCase(deleteInCartAsync.fulfilled,(state,action)=>{
+            state.cartItems=state.cartItems.filter((item)=>item.id!==action.payload)
+            state.status='idle'
+            state.error=null
+        })
+        .addCase(deleteInCartAsync.rejected,(state,action)=>{
             state.status='idle'
             state.error=action.error.message
         })
