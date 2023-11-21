@@ -1,15 +1,18 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Link } from "react-router-dom";
 import {
   ShoppingBagIcon,
   XMarkIcon,
   Bars3Icon,
 } from "@heroicons/react/24/outline";
 import logo from "../../assets/logo.png";
+import { useSelector } from "react-redux";
+
 
 const navigation = [
-  { name: "Home", href: "#", current: true },
-  { name: "Products", href: "#", current: false },
+  { name: "Home", link: '/', current: true },
+  { name: "Products", link:'/products', current: false },
 ];
 
 function classNames(...classes) {
@@ -17,6 +20,9 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+
+  const cartItems=useSelector(state=>state.cart.cartItems)
+
   return (
     <Disclosure as="nav" className="bg-orange-600">
       {({ open }) => (
@@ -42,9 +48,9 @@ export default function Navbar() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.link}
                         className={classNames(
                           item.current
                             ? "bg-gray-900 text-white"
@@ -54,21 +60,21 @@ export default function Navbar() {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
+                <Link
+                  to='/cart'
                   className="relative rounded-full bg-white p-1 text-black  focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <ShoppingBagIcon className="h-7 w-7" aria-hidden="true" />
                   <span className="bg-black absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
-                    {3}
+                    {cartItems.length}
                   </span>
-                </button>
+                </Link>
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-4 sm:ml-7">
