@@ -1,4 +1,3 @@
-import "./App.css";
 import Products from "./pages/Products";
 import Login from "./features/auth/components/Login";
 import Signup from "./features/auth/components/Signup";
@@ -11,6 +10,7 @@ import Notification from "./features/common/Notification";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
+import { fetchLoggedInUserAsync } from "./features/user/userSlice";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +59,7 @@ function App() {
   useEffect(()=>{
     if(user) {
       dispatch(fetchItemsByUserIdAsync(user.id))
+      dispatch(fetchLoggedInUserAsync(user.id))
     }
   },[dispatch,user])
 

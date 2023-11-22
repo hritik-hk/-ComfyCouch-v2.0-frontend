@@ -16,22 +16,26 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.loggedInUser);
-  const error=useSelector(state=>state.auth.error)
+  const error = useSelector((state) => state.auth.error);
 
   const location = useLocation();
 
   const handleSuccessLogin = () => {
     const { from } = queryString.parse(location.search);
-    if(from){
-      navigate(`/${from}`)
-    }
-    else navigate('/products')
+    if (from) {
+      navigate(`/${from}`, {
+        replace: true,
+      });
+    } else
+      navigate("/products", {
+        replace: true,
+      });
   };
 
   return (
     <>
       {user && handleSuccessLogin()}
-      {error && displayNotification('Invalid credentials','error') }
+      {error && displayNotification("Invalid credentials", "error")}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
