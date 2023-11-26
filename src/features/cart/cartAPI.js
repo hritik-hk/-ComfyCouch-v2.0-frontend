@@ -22,12 +22,13 @@ export function addToCart(item) {
   });
 }
 
-
 export function fetchItemsByUserId(userId) {
   return new Promise((resolve, reject) => {
     const fetchItemsByUserIdAsync = async () => {
       try {
-        const response = await fetch("http://192.168.0.177:3004/cart?userID="+userId)
+        const response = await fetch(
+          "http://192.168.0.177:3004/cart?userID=" + userId
+        );
         if (!response.ok) {
           throw new Error("something went wrong, try again");
         }
@@ -41,16 +42,18 @@ export function fetchItemsByUserId(userId) {
   });
 }
 
-
 export function updateCart(update) {
   return new Promise((resolve, reject) => {
     const updateCartAsync = async () => {
       try {
-        const response = await fetch(" http://192.168.0.177:3004/cart/"+update.id, {
-          method: "PATCH",
-          body: JSON.stringify(update),
-          headers: { "content-type": "application/json" },
-        });
+        const response = await fetch(
+          " http://192.168.0.177:3004/cart/" + update.id,
+          {
+            method: "PATCH",
+            body: JSON.stringify(update),
+            headers: { "content-type": "application/json" },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("something went wrong, try again");
@@ -70,15 +73,18 @@ export function deleteInCart(itemId) {
   return new Promise((resolve, reject) => {
     const deleteInCartAsync = async () => {
       try {
-        const response = await fetch(" http://192.168.0.177:3004/cart/"+itemId, {
-          method: "DELETE",
-          headers: { "content-type": "application/json" },
-        })
+        const response = await fetch(
+          " http://192.168.0.177:3004/cart/" + itemId,
+          {
+            method: "DELETE",
+            headers: { "content-type": "application/json" },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("something went wrong, try again");
         }
-        
+
         resolve(itemId);
       } catch (error) {
         reject(error);
@@ -88,3 +94,24 @@ export function deleteInCart(itemId) {
   });
 }
 
+export function resetCart(userID) {
+  // get all items of user's cart - and then delete each
+  return new Promise((resolve, reject) => {
+    const resetCartAsync = async () => {
+      try {
+        const response = await fetchItemsByUserId(userID);
+        const items = response;
+
+        console.log(items);
+
+        for (let item of items) {
+          await deleteInCart(item.id);
+        }
+        resolve({ status: "success" });
+      } catch (err) {
+        reject(err);
+      }
+    };
+    resetCartAsync();
+  });
+}

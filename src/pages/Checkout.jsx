@@ -3,13 +3,14 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserAsync } from "../features/user/userSlice";
 import { createOrderAsync } from "../features/order/orderSlice";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 export default function Checkout() {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.cart.cartItems);
   const userData = useSelector((state) => state.user.userData);
+  const orderPlaced = useSelector((state) => state.order.currentOrderPlaced);
 
   const totalAmount = cartItems.reduce(
     (amount, item) => item.price * item.quantity + amount,
@@ -28,16 +29,24 @@ export default function Checkout() {
   } = useForm();
 
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const [paymentMethod, setPaymentMethod] = useState('cash');
+  const [paymentMethod, setPaymentMethod] = useState("cash");
 
   const handleAddress = (e) => {
     setSelectedAddress(userData.addresses[e.target.value]);
   };
 
-  const handleOrder=()=>{
-    const order={cartItems,totalAmount,totalItems,userData,paymentMethod,selectedAddress}
-    dispatch(createOrderAsync(order))
-  }
+  const handleOrder = () => {
+    const order = {
+      cartItems,
+      totalAmount,
+      totalItems,
+      user:userData.id,
+      paymentMethod,
+      selectedAddress,
+      orderStatus: "pending",
+    };
+    dispatch(createOrderAsync(order));
+  };
 
   const handlePayment = (e) => {
     setPaymentMethod(e.target.value);
@@ -45,6 +54,13 @@ export default function Checkout() {
 
   return (
     <>
+      {!cartItems.length && <Navigate to="/" replace={true} />}
+      {orderPlaced && orderPlaced.paymentMethod === 'cash' && (
+        <Navigate
+          to={`/order-success/${orderPlaced.id}`}
+          replace={true}
+        ></Navigate>
+      )}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           <div className="lg:col-span-3">
@@ -53,7 +69,12 @@ export default function Checkout() {
               className="bg-white px-5 py-12 mt-12"
               noValidate
               onSubmit={handleSubmit((data) => {
-               dispatch(updateUserAsync({...userData,addresses:[...userData.addresses,data]}))
+                dispatch(
+                  updateUserAsync({
+                    ...userData,
+                    addresses: [...userData.addresses, data],
+                  })
+                );
                 reset();
               })}
             >
@@ -232,42 +253,43 @@ export default function Checkout() {
                 Choose from Existing addresses
               </p>
               <ul>
-                {userData && userData.addresses.map((address, index) => (
-                  <li
-                    key={index}
-                    className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200"
-                  >
-                    <div className="flex gap-x-4">
-                      <input
-                        onChange={handleAddress}
-                        name="address"
-                        type="radio"
-                        value={index}
-                        required
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                      <div className="min-w-0 flex-auto">
-                        <p className="text-sm font-semibold leading-6 text-gray-900">
-                          {address.name}
+                {userData &&
+                  userData.addresses.map((address, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200"
+                    >
+                      <div className="flex gap-x-4">
+                        <input
+                          onChange={handleAddress}
+                          name="address"
+                          type="radio"
+                          value={index}
+                          required
+                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        />
+                        <div className="min-w-0 flex-auto">
+                          <p className="text-sm font-semibold leading-6 text-gray-900">
+                            {address.name}
+                          </p>
+                          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                            {address.street}
+                          </p>
+                          <p className="mt-1 truncate text-xs leading-5 text-gray-500">
+                            {address.pinCode}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="hidden sm:flex sm:flex-col sm:items-end">
+                        <p className="text-sm leading-6 text-gray-900">
+                          Phone: {address.phone}
                         </p>
-                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                          {address.street}
-                        </p>
-                        <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                          {address.pinCode}
+                        <p className="text-sm leading-6 text-gray-500">
+                          {address.city}
                         </p>
                       </div>
-                    </div>
-                    <div className="hidden sm:flex sm:flex-col sm:items-end">
-                      <p className="text-sm leading-6 text-gray-900">
-                        Phone: {address.phone}
-                      </p>
-                      <p className="text-sm leading-6 text-gray-500">
-                        {address.city}
-                      </p>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  ))}
               </ul>
 
               <div className="mt-10 space-y-10">
@@ -376,9 +398,7 @@ export default function Checkout() {
                 </p>
                 <div className="mt-6">
                   <div
-                    onClick={() =>
-                      handleOrder()
-                    }
+                    onClick={() => handleOrder()}
                     className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-orange-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-600"
                   >
                     Order Now

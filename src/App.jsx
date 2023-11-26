@@ -5,6 +5,8 @@ import CartPage from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
 import ProductDetails from "./pages/ProductDetails";
 import Protected from "./features/auth/components/Protected";
+import PageNotFound from "./pages/PageNotFound";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Notification from "./features/common/Notification";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
   {
     path: "/product-detail/:productID/:variantID",
     element: <ProductDetails />,
+  },
+  {
+    path: "/order-success/:id",
+    element: <OrderSuccessPage />,
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
   },
 ]);
 
