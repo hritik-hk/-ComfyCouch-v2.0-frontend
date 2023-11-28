@@ -6,7 +6,7 @@ import StarRatings from "react-star-ratings";
 import { displayNotification } from "../../../utils/displayNotification";
 
 export default function ProductCard({ item }) {
-  const { product_id, variant_id, title, thumbnail, price, rating, brand } =item;
+  const { product_id, variant_id, title, thumbnail,color, price, rating, brand } =item;
   const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ export default function ProductCard({ item }) {
       productID:product_id,
       variantID: variant_id,
       thumbnail: thumbnail,
+      color:color,
       price:price,
       brand:brand,
       quantity:1,

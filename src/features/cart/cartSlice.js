@@ -106,6 +106,7 @@ export const cartSlice=createSlice({
         })
         .addCase(resetCartAsync.fulfilled,(state)=>{
             state.status='idle'
+            state.cartItems=[]
             state.error=null
         })
         .addCase(resetCartAsync.rejected,(state,action)=>{

@@ -7,6 +7,8 @@ import ProductDetails from "./pages/ProductDetails";
 import Protected from "./features/auth/components/Protected";
 import PageNotFound from "./pages/PageNotFound";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
+import OrderDetail from "./features/user/components/OrderDetail";
+import OrderHistory from "./features/user/components/OrderHistory";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Notification from "./features/common/Notification";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,6 +56,22 @@ const router = createBrowserRouter([
   {
     path: "/order-success/:id",
     element: <OrderSuccessPage />,
+  },
+  {
+    path: "/order/:id",
+    element: (
+      <Protected>
+        <OrderDetail />
+      </Protected>
+    ),
+  },
+  {
+    path: "/my-orders",
+    element: (
+      <Protected>
+        <OrderHistory />
+      </Protected>
+    ),
   },
   {
     path: "*",

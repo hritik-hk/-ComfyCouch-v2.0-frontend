@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkUserAsync } from "../authSlice";
 import queryString from "query-string";
 import { displayNotification } from "../../../utils/displayNotification";
+import { useEffect } from "react";
 
 export default function Login() {
   const {
@@ -32,10 +33,15 @@ export default function Login() {
       });
   };
 
+  useEffect(()=>{
+    if(error!==null){
+      displayNotification("Invalid credentials", "error")
+    }
+  },[error])
+
   return (
     <>
       {user && handleSuccessLogin()}
-      {error && displayNotification("Invalid credentials", "error")}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
