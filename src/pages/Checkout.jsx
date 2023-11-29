@@ -9,7 +9,7 @@ export default function Checkout() {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const userData = useSelector((state) => state.user.userData);
+  const userInfo = useSelector((state) => state.user.userInfo);
   const orderPlaced = useSelector((state) => state.order.currentOrderPlaced);
 
   const totalAmount = cartItems.reduce(
@@ -32,7 +32,7 @@ export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("cash");
 
   const handleAddress = (e) => {
-    setSelectedAddress(userData.addresses[e.target.value]);
+    setSelectedAddress(userInfo.addresses[e.target.value]);
   };
 
   const handleOrder = () => {
@@ -40,7 +40,7 @@ export default function Checkout() {
       cartItems,
       totalAmount,
       totalItems,
-      userID:userData.id,
+      userID:userInfo.id,
       paymentMethod,
       selectedAddress,
       orderStatus: "pending",
@@ -71,8 +71,8 @@ export default function Checkout() {
               onSubmit={handleSubmit((data) => {
                 dispatch(
                   updateUserAsync({
-                    ...userData,
-                    addresses: [...userData.addresses, data],
+                    ...userInfo,
+                    addresses: [...userInfo.addresses, data],
                   })
                 );
                 reset();
@@ -253,8 +253,8 @@ export default function Checkout() {
                 Choose from Existing addresses
               </p>
               <ul>
-                {userData &&
-                  userData.addresses.map((address, index) => (
+                {userInfo &&
+                  userInfo.addresses.map((address, index) => (
                     <li
                       key={index}
                       className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200"

@@ -9,6 +9,7 @@ import PageNotFound from "./pages/PageNotFound";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import OrderDetail from "./features/user/components/OrderDetail";
 import OrderHistory from "./features/user/components/OrderHistory";
+import UserProfile from "./features/user/components/UserProfile";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Notification from "./features/common/Notification";
 import { useDispatch, useSelector } from "react-redux";
@@ -74,22 +75,29 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/profile",
+    element: (
+      <Protected>
+        <UserProfile />
+      </Protected>
+    ),
+  },
+  {
     path: "*",
     element: <PageNotFound />,
   },
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.loggedInUser);
 
-  const dispatch= useDispatch()
-  const user=useSelector(state=>state.auth.loggedInUser)
-
-  useEffect(()=>{
-    if(user) {
-      dispatch(fetchItemsByUserIdAsync(user.id))
-      dispatch(fetchLoggedInUserAsync(user.id))
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchItemsByUserIdAsync(user.id));
+      dispatch(fetchLoggedInUserAsync(user.id));
     }
-  },[dispatch,user])
+  }, [dispatch, user]);
 
   return (
     <>

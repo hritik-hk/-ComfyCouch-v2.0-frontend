@@ -32,7 +32,7 @@ export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    userData: null,
+    userInfo: null,
     userOrders: [],
     status: "idle",
     error: null,
@@ -43,7 +43,7 @@ const userSlice = createSlice({
         state.status = "loading";
       })
       .addCase(updateUserAsync.fulfilled, (state, action) => {
-        state.userData = action.payload;
+        state.userInfo = action.payload;
         state.status = "idle";
       })
       .addCase(updateUserAsync.rejected, (state, action) => {
@@ -54,7 +54,7 @@ const userSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchLoggedInUserAsync.fulfilled, (state, action) => {
-        state.userData = action.payload;
+        state.userInfo = action.payload;
         state.status = "idle";
       })
       .addCase(fetchLoggedInUserAsync.rejected, (state, action) => {
