@@ -9,10 +9,9 @@ import {
 import logo from "../../assets/logo.png";
 import { useSelector } from "react-redux";
 
-
 const navigation = [
-  { name: "Home", link: '/', current: true },
-  { name: "Products", link:'/products', current: false },
+  { name: "Home", link: "/", current: true },
+  { name: "Products", link: "/products", current: false },
 ];
 
 function classNames(...classes) {
@@ -20,8 +19,8 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-
-  const cartItems=useSelector(state=>state.cart.cartItems)
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const user = useSelector((state) => state.auth.loggedInUser);
 
   return (
     <Disclosure as="nav" className="bg-orange-600">
@@ -67,7 +66,7 @@ export default function Navbar() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Link
-                  to='/cart'
+                  to="/cart"
                   className="relative rounded-full bg-white p-1 text-black  focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <ShoppingBagIcon className="h-7 w-7" aria-hidden="true" />
@@ -100,7 +99,7 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <Link
-                            to='/profile'
+                            to="/profile"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
@@ -113,7 +112,7 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <Link
-                            to='/my-orders'
+                            to="/my-orders"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
@@ -125,15 +124,15 @@ export default function Navbar() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <Link
+                            to="/logout"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Sign out
-                          </a>
+                            {user == null ? "Sign in" : "Sign out"}
+                          </Link>
                         )}
                       </Menu.Item>
                     </Menu.Items>

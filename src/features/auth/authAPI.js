@@ -55,3 +55,19 @@ export function checkUser(userData){
         checkUserAsync()
     })
 }
+
+
+export function signOut(userId){
+    return new Promise((resolve,reject)=>{
+        const signOutAsync= async()=>{
+            try{
+                //backend work, just testing front-end here
+                resolve('success, userId:'+userId)
+            }
+            catch(error){
+                reject(error)
+            }
+        }
+        signOutAsync()
+    })
+}

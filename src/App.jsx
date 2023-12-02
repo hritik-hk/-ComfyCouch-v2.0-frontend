@@ -10,6 +10,7 @@ import OrderSuccessPage from "./pages/OrderSuccessPage";
 import OrderDetail from "./features/user/components/OrderDetail";
 import OrderHistory from "./features/user/components/OrderHistory";
 import UserProfile from "./features/user/components/UserProfile";
+import Logout from "./features/auth/components/Logout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Notification from "./features/common/Notification";
 import { useDispatch, useSelector } from "react-redux";
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
         <UserProfile />
       </Protected>
     ),
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
   },
   {
     path: "*",
