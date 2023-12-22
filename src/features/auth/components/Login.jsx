@@ -35,7 +35,7 @@ export default function Login() {
 
   useEffect(()=>{
     if(error!==null){
-      displayNotification("Invalid credentials", "error")
+      displayNotification(error, "error")
     }
   },[error])
 

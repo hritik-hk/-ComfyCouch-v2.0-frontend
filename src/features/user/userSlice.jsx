@@ -66,6 +66,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
         state.userOrders = action.payload;
+        state.error = null;
         state.status = "idle";
       })
       .addCase(fetchLoggedInUserOrdersAsync.rejected, (state, action) => {

@@ -22,31 +22,24 @@ export function createUser(userData){
 }
 
 
-export function checkUser(userData){
+export function checkUser(loginData){
     return new Promise((resolve,reject)=>{
         const checkUserAsync= async()=>{
             try{
-                const {email,password}=userData
+                const response= await fetch("http://localhost:8080/auth/login",{
+                    method:"POST",
+                    body:JSON.stringify(loginData),
+                    headers:{'content-type':'application/json'}
+                })
 
-                const response= await fetch('http://192.168.0.177:3004/users?email='+email)
+                const data= await response.json();
 
                 if(!response.ok){
-                    throw new Error('something went wrong, try again')
+                    const message= data.error || 'something went wrong, try again';
+                    throw new Error(message);
                 }
-                const data= await response.json()
-
-                //only for testing frontend
-                if(data.length){
-                    if(password===data[0].password){
-                        resolve(data[0])
-                    }else{
-                        reject('wrong credentials')
-                    }
-                }
-                else{
-                    reject('wrong credentials')
-                }
-            
+                
+                resolve(data);
             }
             catch(error){
                 reject(error)

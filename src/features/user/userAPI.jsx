@@ -3,7 +3,7 @@ export function updateUser(update) {
     const updateUserAsync = async () => {
       try {
         const response = await fetch(
-          "http://192.168.0.177:3004/users/" + update.id,
+          "http://localhost:8080/user/" + update.id,
           {
             method: "PATCH",
             body: JSON.stringify(update),
@@ -29,7 +29,7 @@ export function fetchLoggedInUser(id) {
   return new Promise((resolve, reject) => {
     const fetchLoggedInUserAsync = async () => {
       try {
-        const response = await fetch("http://192.168.0.177:3004/users/" + id);
+        const response = await fetch("http://localhost:8080/user/" + id);
 
         if (!response.ok) {
           throw new Error("something went wrong, try again");
@@ -48,7 +48,7 @@ export function fetchLoggedInUserOrders(userID) {
   return new Promise((resolve,reject) =>{
     const fetchLoggedInUserOrdersAsync = async () => {
       try {
-        const response = await fetch("http://192.168.0.177:3004/orders?userID=" + userID);
+        const response = await fetch("http://localhost:8080/order/" + userID);
 
         if (!response.ok) {
           throw new Error("something went wrong, try again");

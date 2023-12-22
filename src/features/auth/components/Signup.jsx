@@ -12,7 +12,7 @@ export default function Signup() {
     formState: { errors },
   } = useForm();
 
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -53,7 +53,15 @@ export default function Signup() {
             noValidate
             className="space-y-5"
             onSubmit={handleSubmit((data) => {
-              dispatch(createUserAsync({username:data.username,email:data.email,password:data.password,addresses:[]}))
+              dispatch(
+                createUserAsync({
+                  username: data.username,
+                  email: data.email,
+                  password: data.password,
+                  addresses: [],
+                  role: 'user',
+                })
+              );
             })}
           >
             <div>
@@ -72,7 +80,7 @@ export default function Signup() {
                   type="text"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                 {errors.username && (
+                {errors.username && (
                   <p className="text-red-500">{errors.username.message}</p>
                 )}
               </div>
@@ -91,14 +99,14 @@ export default function Signup() {
                   {...register("email", {
                     required: "email is required",
                     pattern: {
-                      value: /^([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}$/igm ,
+                      value: /^([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}$/gim,
                       message: "Email is not valid",
                     },
                   })}
                   type="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                 {errors.email && (
+                {errors.email && (
                   <p className="text-red-500">{errors.email.message}</p>
                 )}
               </div>
@@ -114,8 +122,8 @@ export default function Signup() {
               <div className="mt-2">
                 <input
                   id="password"
-                  {...register('password', {
-                    required: 'password is required',
+                  {...register("password", {
+                    required: "password is required",
                     pattern: {
                       value:
                         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
@@ -127,9 +135,9 @@ export default function Signup() {
                   type="password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                 {errors.password && (
+                {errors.password && (
                   <p className="text-red-500">{errors.password.message}</p>
-                  )}
+                )}
               </div>
             </div>
             <div>
@@ -142,19 +150,20 @@ export default function Signup() {
               <div className="mt-2">
                 <input
                   id="confirmPassword"
-                  {...register('confirmPassword', {
-                    required: 'confirm password is required',
+                  {...register("confirmPassword", {
+                    required: "confirm password is required",
                     validate: (value, formValues) =>
-                      value === formValues.password || 'password does not match',
+                      value === formValues.password ||
+                      "password does not match",
                   })}
                   type="password"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                 {errors.confirmPassword && (
+                {errors.confirmPassword && (
                   <p className="text-red-500">
                     {errors.confirmPassword.message}
                   </p>
-                 )}
+                )}
               </div>
             </div>
 

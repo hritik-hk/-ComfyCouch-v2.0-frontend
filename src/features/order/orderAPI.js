@@ -2,7 +2,7 @@ export function createOrder(order){
     return new Promise((resolve, reject) => {
         const createOrderAsync = async () => {
           try {
-            const response = await fetch(" http://192.168.0.177:3004/orders", {
+            const response = await fetch("http://localhost:8080/order", {
               method: "POST",
               body: JSON.stringify(order),
               headers: { "content-type": "application/json" },

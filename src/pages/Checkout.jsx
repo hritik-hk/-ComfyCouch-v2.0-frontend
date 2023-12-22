@@ -40,7 +40,7 @@ export default function Checkout() {
       cartItems,
       totalAmount,
       totalItems,
-      userID:userInfo.id,
+      user:userInfo.id,
       paymentMethod,
       selectedAddress,
       orderStatus: "pending",

@@ -30,7 +30,7 @@ export default function OrderHistory() {
                   </h2>
                   <div className="flex justify-between mb-2">
                     <h2 className="text-xl font-semibold">
-                      Order Number: #4356
+                      Order ID: {order.id}
                     </h2>
                     <Link
                       to={`/order/${order.id}`}
@@ -43,19 +43,19 @@ export default function OrderHistory() {
                   <div className="flex justify-start">
                     <div className="mr-4">
                       <p className="font-medium">Date of Order</p>
-                      <p>14 Dec,2023</p>
+                      <p>{order.createdAt.substring(0,10)}</p>
                     </div>
                     <div className="mx-4">
                       <p className="font-medium">Total Cost</p>
-                      <p>₹ 15,738</p>
+                      <p>₹ {order.totalAmount.toLocaleString("en-IN")}</p>
                     </div>
                     <div className="mx-4">
                       <p className="font-medium">Payment Status</p>
-                      <p>Pending</p>
+                      <p>{order.paymentStatus}</p>
                     </div>
                     <div className="mx-4">
                       <p className="font-medium">Delivery Date</p>
-                      <p>17 Dec, 2023</p>
+                      <p>{order.createdAt.substring(0,10)}</p>
                     </div>
                   </div>
                   {/* list of products */}
