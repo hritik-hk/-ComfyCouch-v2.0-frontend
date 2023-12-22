@@ -6,7 +6,8 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductByIdAsync } from "../features/product/productSlice";
 import { Bars } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { fetchVariantIdByColor } from "../features/product/productAPI";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -16,6 +17,7 @@ export default function ProductDetails() {
   const params = useParams();
 
   const dispatch = useDispatch();
+  const navigate=useNavigate();
 
   // fetch product details
   useEffect(() => {
@@ -28,21 +30,26 @@ export default function ProductDetails() {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedImg, setSelectedImg] = useState(null);
   const [breadcrumbs, setBreadcrumbs] = useState([]);
-  const [userRating, setUserRating]=useState(0)
+  const [userRating, setUserRating] = useState(0);
 
   //initalize states, variables
   useEffect(() => {
     if (selectedProduct) {
-      setSelectedImg(selectedProduct.images[0]);
+      setSelectedImg(selectedProduct.selectedVariant.images[0]);
       setBreadcrumbs([{ id: 1, name: selectedProduct.category, href: "#" }]);
-      const color = selectedProduct.colors.find(
-        (item) => item.variant_id === selectedProduct.variant_id
+      const color = selectedProduct.productDetail.colors.find(
+        (item) => item.color === selectedProduct.selectedVariant.color
       );
       if (color) {
-        setSelectedColor(color.img);
+        setSelectedColor(color.thumbnail);
       }
     }
   }, [selectedProduct]);
+
+  async function handleColor(productID,color) {
+    const {variant_id}= await fetchVariantIdByColor(productID,color);
+    navigate(`/product-detail/${productID}/${variant_id}`);
+  }
 
   return (
     <>
@@ -95,7 +102,7 @@ export default function ProductDetails() {
                     aria-current="page"
                     className="font-medium text-gray-500 hover:text-gray-600"
                   >
-                    {selectedProduct?.title}
+                    {selectedProduct.selectedVariant?.title}
                   </a>
                 </li>
               </ol>
@@ -118,7 +125,7 @@ export default function ProductDetails() {
                   className="mt-4"
                 >
                   <div className="mt-10 mx-auto grid grid-cols-4 gap-x-4 px-3">
-                    {selectedProduct?.images.map((img, idx) => {
+                    {selectedProduct.selectedVariant.images.map((img, idx) => {
                       return (
                         <div key={idx} className="cursor-pointer">
                           <RadioGroup.Option
@@ -131,7 +138,7 @@ export default function ProductDetails() {
                             }
                           >
                             <img
-                              src={selectedProduct?.images[idx]}
+                              src={selectedProduct.selectedVariant.images[idx]}
                               alt="product image"
                               className="h-4/5 w-full object-cover object-bottom"
                             />
@@ -147,21 +154,21 @@ export default function ProductDetails() {
               <div className="mx-auto max-w-3xl px-4 pb-16 pt-10 sm:px-6 lg:px-8 lg:pb-24 lg:pt-16">
                 <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                   <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                    {selectedProduct?.title}
+                    {selectedProduct.selectedVariant.title}
                   </h1>
                 </div>
 
                 {/* Options */}
                 <div className="mt-4 lg:row-span-3 lg:mt-0">
                   <p className="text-3xl tracking-tight text-gray-900">
-                    ₹{selectedProduct?.price}
+                    ₹{selectedProduct.selectedVariant.price}
                   </p>
 
                   {/* Reviews */}
                   <div className="mt-6">
                     <div className="flex items-center">
                       <StarRatings
-                        rating={selectedProduct?.rating}
+                        rating={selectedProduct.selectedVariant.rating}
                         starRatedColor="#ea580c"
                         numberOfStars={5}
                         name="rating"
@@ -189,15 +196,22 @@ export default function ProductDetails() {
                           className="mt-4"
                         >
                           <div className="mt-10 mx-auto grid grid-cols-4 gap-x-4 px-3">
-                            {selectedProduct?.colors.map((item, idx) => {
-                              return (
-                                <div key={idx} className="cursor-pointer">
-                                  <Link
-                                    to={`/product-detail/${selectedProduct.product_id}/${item.variant_id}`}
+                            {selectedProduct.productDetail.colors.map(
+                              (item, idx) => {
+                                return (
+                                  <div
+                                    key={idx}
+                                    className="cursor-pointer"
+                                    onClick={() =>
+                                      handleColor(
+                                        selectedProduct.productDetail.product_id,
+                                        item.color
+                                      )
+                                    }
                                   >
                                     <RadioGroup.Option
                                       key={idx} //change to a uuid
-                                      value={item.img}
+                                      value={item.thumbnail}
                                       className={({ checked }) =>
                                         classNames(
                                           checked
@@ -207,15 +221,15 @@ export default function ProductDetails() {
                                       }
                                     >
                                       <img
-                                        src={item.img}
+                                        src={item.thumbnail}
                                         alt="product image"
                                         className="h-4/5 w-full object-cover object-bottom"
                                       />
                                     </RadioGroup.Option>
-                                  </Link>
-                                </div>
-                              );
-                            })}
+                                  </div>
+                                );
+                              }
+                            )}
                           </div>
                         </RadioGroup>
                       )}
@@ -244,19 +258,17 @@ export default function ProductDetails() {
                         </Disclosure.Button>
                         <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
                           <div>
-                            {selectedProduct.productDetails.map((item, idx) => {
-                              return (
-                                <div key={idx}>
-                                  <span className="text-sm font-bold">
-                                    {Object.keys(item)[0]}
-                                  </span>
-                                  <span className="font-bold"> : </span>
-                                  <span className="text-sm">
-                                    {Object.values(item)[0]}
-                                  </span>
-                                </div>
-                              );
-                            })}
+                            {
+                              <ul>
+                                {Object.entries(
+                                  selectedProduct.productDetail.productDetails
+                                ).map(([key, value]) => (
+                                  <li key={key}>
+                                    <strong>{key}:</strong> {value}
+                                  </li>
+                                ))}
+                              </ul>
+                            }
                           </div>
                         </Disclosure.Panel>
                       </>
@@ -274,59 +286,17 @@ export default function ProductDetails() {
                           />
                         </Disclosure.Button>
                         <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                          <div>
-                            <span className="text-sm font-bold">
-                              {
-                                Object.keys(
-                                  selectedProduct.specifications[0]
-                                )[0]
-                              }
-                            </span>
-                            <span className="font-bold"> : </span>
-                            <span className="text-sm">
-                              {
-                                Object.values(
-                                  selectedProduct.specifications[0]
-                                )[0]
-                              }
-                            </span>
-                          </div>
-
-                          <div>
-                            <span className="text-sm font-bold">
-                              {
-                                Object.keys(
-                                  selectedProduct.specifications[1]
-                                )[0]
-                              }
-                            </span>
-                            <span className="font-bold"> : </span>
-                            <span className="text-sm">
-                              {
-                                Object.values(
-                                  selectedProduct.specifications[1]
-                                )[0]
-                              }
-                            </span>
-                          </div>
-
-                          <div>
-                            <span className="text-sm font-bold">
-                              {
-                                Object.keys(
-                                  selectedProduct.specifications[2]
-                                )[0]
-                              }
-                            </span>
-                            <span className="font-bold"> : </span>
-                            <span className="text-sm">
-                              {
-                                Object.values(
-                                  selectedProduct.specifications[2]
-                                )[0]
-                              }
-                            </span>
-                          </div>
+                          {
+                            <ul>
+                              {Object.entries(
+                                selectedProduct.productDetail.specifications
+                              ).map(([key, value]) => (
+                                <li key={key}>
+                                  <strong>{key}:</strong> {value}
+                                </li>
+                              ))}
+                            </ul>
+                          }
                         </Disclosure.Panel>
                       </>
                     )}
@@ -352,16 +322,18 @@ export default function ProductDetails() {
                                 }
                               >
                                 <div className="h-[150px] flex flex-col justify-around">
-                                <StarRatings
-                                  rating={userRating}
-                                  starRatedColor="#ea580c"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="20px"
-                                  starSpacing="1px"
-                                  isSelectable={true}
-                                  changeRating={(rating)=>setUserRating(rating)}
-                                />
+                                  <StarRatings
+                                    rating={userRating}
+                                    starRatedColor="#ea580c"
+                                    numberOfStars={5}
+                                    name="rating"
+                                    starDimension="20px"
+                                    starSpacing="1px"
+                                    isSelectable={true}
+                                    changeRating={(rating) =>
+                                      setUserRating(rating)
+                                    }
+                                  />
                                   <input
                                     className="w-full rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white"
                                     placeholder="write your review here..."
@@ -377,7 +349,7 @@ export default function ProductDetails() {
                             </div>
 
                             <div className="mt-3">
-                              {selectedProduct.CustomerReviews.map(
+                              {selectedProduct.productDetail.customerReviews.map(
                                 (item, idx) => {
                                   return (
                                     <div key={idx + 10} className="my-7">

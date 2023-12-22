@@ -2,7 +2,7 @@ export function fetchAllProducts() {
   return new Promise((resolve, reject) => {
     const getAllProducts = async () => {
       try {
-        const response = await fetch("http://192.168.0.177:3004/variants");
+        const response = await fetch("http://localhost:8080/variant");
 
         if (response.ok) {
           const data = await response.json();
@@ -22,13 +22,12 @@ export function fetchProductById({productID,variantID}) {
     return new Promise((resolve, reject) => {
       const getProductById = async () => {
         try {
-          const res1 = await fetch("http://192.168.0.177:3004/products?product_id="+productID)
-          const res2 = await fetch("http://192.168.0.177:3004/variants?variant_id="+variantID)
+          const res = await fetch(`http://localhost:8080/product/${productID}/${variantID}`)
   
-          if (res1.ok && res2.ok) {
-            const productDetail = await res1.json();
-            const variantDetail= await res2.json();
-            resolve({...productDetail[0],...variantDetail[0]});
+          if (res.ok) {
+            const productDetail = await res.json();
+            console.log(productDetail)
+            resolve(productDetail);
           } else {
             throw new Error("Something went wrong");
           }
@@ -49,11 +48,15 @@ export async function fetchProductsByFilter(filter) {
       queryString += `${key}=${item}&`;
     }
   }
+
+  console.log(queryString);
+
+
   return new Promise((resolve, reject) => {
     const getProductsByFilter = async () => {
       try {
         const response = await fetch(
-          "http://192.168.0.177:3004/variants?" + queryString
+          "http://localhost:8080/variant?" + queryString
         );
 
         if (response.ok) {
@@ -74,7 +77,7 @@ export async function fetchCategories() {
   return new Promise((resolve, reject) => {
     const getCategories = async () => {
       try {
-        const response = await fetch("http://192.168.0.177:3004/categories");
+        const response = await fetch("http://localhost:8080/category");
 
         if (response.ok) {
           const data = await response.json();
@@ -94,7 +97,7 @@ export async function fetchColors() {
   return new Promise((resolve, reject) => {
     const getColors = async () => {
       try {
-        const response = await fetch("http://192.168.0.177:3004/colors");
+        const response = await fetch("http://localhost:8080/color");
 
         if (response.ok) {
           const data = await response.json();
@@ -114,7 +117,7 @@ export async function fetchBrands() {
   return new Promise((resolve, reject) => {
     const getBrands = async () => {
       try {
-        const response = await fetch("http://192.168.0.177:3004/brands");
+        const response = await fetch("http://localhost:8080/brand");
 
         if (response.ok) {
           const data = await response.json();
@@ -127,5 +130,24 @@ export async function fetchBrands() {
       }
     };
     getBrands();
+  });
+}
+
+export function fetchVariantIdByColor(productID,color) {
+  return new Promise((resolve, reject) => {
+    const getProductVariantByColor = async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/variant/${productID}/${color}`);
+        if (res.ok) {
+          const variantID = await res.json();
+          resolve(variantID);
+        } else {
+          throw new Error("Something went wrong");
+        }
+      } catch (err) {
+        reject(err);
+      }
+    }
+    getProductVariantByColor();
   });
 }
