@@ -6,12 +6,11 @@ import { fetchLoggedInUserOrdersAsync } from "../userSlice";
 
 export default function OrderHistory() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.loggedInUser);
   const orders = useSelector((state) => state.user.userOrders);
 
   useEffect(() => {
-    dispatch(fetchLoggedInUserOrdersAsync(user.id));
-  }, [dispatch, user]);
+    dispatch(fetchLoggedInUserOrdersAsync());
+  }, [dispatch]);
 
   return (
     <>

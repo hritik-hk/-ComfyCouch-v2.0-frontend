@@ -22,12 +22,12 @@ export function addToCart(item) {
   });
 }
 
-export function fetchItemsByUserId(userId) {
+export function fetchItemsByUserId() {
   return new Promise((resolve, reject) => {
     const fetchItemsByUserIdAsync = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/cart/" + userId
+          "http://localhost:8080/cart/"
         );
         if (!response.ok) {
           throw new Error("something went wrong, try again");
@@ -93,12 +93,12 @@ export function deleteInCart(itemId) {
   });
 }
 
-export function resetCart(userID) {
+export function resetCart() {
   // get all items of user's cart - and then delete each
   return new Promise((resolve, reject) => {
     const resetCartAsync = async () => {
       try {
-        const response = await fetchItemsByUserId(userID);
+        const response = await fetchItemsByUserId();
         const items = response;
 
         for (let item of items) {

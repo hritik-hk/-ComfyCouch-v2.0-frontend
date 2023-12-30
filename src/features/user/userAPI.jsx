@@ -25,11 +25,11 @@ export function updateUser(update) {
   });
 }
 
-export function fetchLoggedInUser(id) {
+export function fetchLoggedInUser() {
   return new Promise((resolve, reject) => {
     const fetchLoggedInUserAsync = async () => {
       try {
-        const response = await fetch("http://localhost:8080/user/" + id);
+        const response = await fetch("http://localhost:8080/user/");
 
         if (!response.ok) {
           throw new Error("something went wrong, try again");
@@ -44,11 +44,11 @@ export function fetchLoggedInUser(id) {
   });
 }
 
-export function fetchLoggedInUserOrders(userID) {
+export function fetchLoggedInUserOrders() {
   return new Promise((resolve,reject) =>{
     const fetchLoggedInUserOrdersAsync = async () => {
       try {
-        const response = await fetch("http://localhost:8080/order/" + userID);
+        const response = await fetch("http://localhost:8080/order/");
 
         if (!response.ok) {
           throw new Error("something went wrong, try again");
