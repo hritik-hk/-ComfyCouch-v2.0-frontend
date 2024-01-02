@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createUser , loginUser, signOut} from "./authAPI";
+import { createUser , loginUser, signOut, checkAuth} from "./authAPI";
 
 export const createUserAsync = createAsyncThunk(
   "user/createUser",
@@ -10,9 +10,17 @@ export const createUserAsync = createAsyncThunk(
 );
 
 export const loginUserAsync = createAsyncThunk(
-  "user/ loginUser",
+  "user/loginUser",
   async (userData) => {
-    const response = await  loginUser(userData);
+    const response = await loginUser(userData);
+    return response;
+  }
+);
+
+export const checkAuthAsync = createAsyncThunk(
+  "user/checkAuth",
+  async () => {
+    const response = await checkAuth();
     return response;
   }
 );
@@ -30,7 +38,8 @@ export const authSlice = createSlice({
   initialState: {
     loggedInUserToken: null, 
     status: "idle",
-    error:null
+    error:null,
+    userChecked:false, //to handle user is authenticated when browser is refreshed
   },
 
   reducers: {},
@@ -71,6 +80,20 @@ export const authSlice = createSlice({
       })
       .addCase(signOutAsync.rejected, (state,action) => {
         state.status = "idle"
+        state.error=action.error.message
+      })
+      .addCase(checkAuthAsync.pending, (state) => {
+        state.status = "loading"
+      })
+      .addCase(checkAuthAsync.fulfilled, (state,action) => {
+        state.status = "idle"
+        state.loggedInUserToken=action.payload
+        state.userChecked=true //checks user is authenticated when browser is refreshed
+        state.error=null
+      })
+      .addCase(checkAuthAsync.rejected, (state,action) => {
+        state.status = "idle"
+        state.userChecked=true
         state.error=action.error.message
       })
   },

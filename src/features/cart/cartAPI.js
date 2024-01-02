@@ -2,7 +2,7 @@ export function addToCart(item) {
   return new Promise((resolve, reject) => {
     const addToCartAsync = async () => {
       try {
-        const response = await fetch("http://localhost:8080/cart", {
+        const response = await fetch("http://localhost:8080/api/cart", {
           method: "POST",
           body: JSON.stringify(item),
           headers: { "content-type": "application/json" },
@@ -27,7 +27,7 @@ export function fetchItemsByUserId() {
     const fetchItemsByUserIdAsync = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/cart"
+          "http://localhost:8080/api/cart"
         );
         if (!response.ok) {
           throw new Error("something went wrong, try again");
@@ -47,7 +47,7 @@ export function updateCart(update) {
     const updateCartAsync = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/cart/" + update.id,
+          "http://localhost:8080/api/cart/" + update.id,
           {
             method: "PATCH",
             body: JSON.stringify(update),
@@ -74,7 +74,7 @@ export function deleteInCart(itemId) {
     const deleteInCartAsync = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/cart/" + itemId,
+          "http://localhost:8080/api/cart/" + itemId,
           {
             method: "DELETE",
             headers: { "content-type": "application/json" },

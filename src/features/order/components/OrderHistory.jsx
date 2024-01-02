@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchLoggedInUserOrdersAsync } from "../userSlice";
+import { fetchLoggedInUserOrdersAsync } from "../../user/userSlice";
 import { Bars } from "react-loader-spinner";
 
 export default function OrderHistory() {
@@ -19,7 +19,7 @@ export default function OrderHistory() {
         <div className="mt-10 flex flex-col justify-center items-center">
           <h1 className="text-2xl font-semibold">Order history</h1>
           <ul>
-            {orders != null ? (
+            {orders == null ? (
               <div className="flex justify-center items-center w-full sm:col-span-3">
                 <Bars
                   height="100"

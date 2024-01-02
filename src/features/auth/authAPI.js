@@ -2,7 +2,7 @@ export function createUser(userData){
     return new Promise((resolve,reject)=>{
         const createUserAsync= async()=>{
             try{
-                const response= await fetch('http://192.168.0.177:3004/users',{
+                const response= await fetch('http://localhost:8080/api/users',{
                     method:'POST',
                     body:JSON.stringify(userData),
                     headers:{'content-type':'application/json'}
@@ -26,7 +26,7 @@ export function loginUser(loginData){
     return new Promise((resolve,reject)=>{
         const  loginUserAsync= async()=>{
             try{
-                const response= await fetch("http://localhost:8080/auth/login",{
+                const response= await fetch("http://localhost:8080/api/auth/login",{
                     method:"POST",
                     body:JSON.stringify(loginData),
                     headers:{'content-type':'application/json'}
@@ -62,5 +62,27 @@ export function signOut(){
             }
         }
         signOutAsync()
+    })
+}
+
+export function checkAuth(){
+    return new Promise((resolve,reject)=>{
+        const  checkAuthAsync= async()=>{
+            try{
+                const response= await fetch("http://localhost:8080/api/auth/check");
+                const data= await response.json();
+
+                if(!response.ok){
+                    const message= data.error || 'something went wrong, try again';
+                    throw new Error(message);
+                }
+                
+                resolve(data);
+            }
+            catch(error){
+                reject(error)
+            }
+        }
+        checkAuthAsync()
     })
 }
