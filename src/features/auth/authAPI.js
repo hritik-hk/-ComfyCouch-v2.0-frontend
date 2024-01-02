@@ -22,9 +22,9 @@ export function createUser(userData){
 }
 
 
-export function checkUser(loginData){
+export function loginUser(loginData){
     return new Promise((resolve,reject)=>{
-        const checkUserAsync= async()=>{
+        const  loginUserAsync= async()=>{
             try{
                 const response= await fetch("http://localhost:8080/auth/login",{
                     method:"POST",
@@ -45,17 +45,17 @@ export function checkUser(loginData){
                 reject(error)
             }
         }
-        checkUserAsync()
+        loginUserAsync()
     })
 }
 
 
-export function signOut(userId){
+export function signOut(){
     return new Promise((resolve,reject)=>{
         const signOutAsync= async()=>{
             try{
                 //backend work, just testing front-end here
-                resolve('success, userId:'+userId)
+                resolve('success, userId')
             }
             catch(error){
                 reject(error)

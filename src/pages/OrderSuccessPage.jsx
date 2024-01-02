@@ -9,14 +9,14 @@ export default function OrderSuccessPage() {
   const params = useParams();
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.auth.loggedInUser);
+  const user = useSelector((state) => state.user.userInfo);
 
   useEffect(() => {
     //reset cart
     dispatch(resetCartAsync());
     //resent current order placed
     dispatch(resetOrder());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

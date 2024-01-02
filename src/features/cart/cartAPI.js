@@ -27,7 +27,7 @@ export function fetchItemsByUserId() {
     const fetchItemsByUserIdAsync = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/cart/"
+          "http://localhost:8080/cart"
         );
         if (!response.ok) {
           throw new Error("something went wrong, try again");

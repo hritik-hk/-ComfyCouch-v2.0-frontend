@@ -40,7 +40,6 @@ export default function Checkout() {
       cartItems,
       totalAmount,
       totalItems,
-      user:userInfo.id,
       paymentMethod,
       selectedAddress,
       orderStatus: "pending",
@@ -71,7 +70,6 @@ export default function Checkout() {
               onSubmit={handleSubmit((data) => {
                 dispatch(
                   updateUserAsync({
-                    ...userInfo,
                     addresses: [...userInfo.addresses, data],
                   })
                 );

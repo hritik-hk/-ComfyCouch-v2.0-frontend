@@ -20,7 +20,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const user = useSelector((state) => state.auth.loggedInUser);
+  const token = useSelector((state) => state.auth.loggedInUserToken);
 
   return (
     <Disclosure as="nav" className="bg-orange-600">
@@ -105,7 +105,7 @@ export default function Navbar() {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            Your Profile
+                          Your Profile
                           </Link>
                         )}
                       </Menu.Item>
@@ -118,7 +118,7 @@ export default function Navbar() {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            You Orders
+                           Your Orders
                           </Link>
                         )}
                       </Menu.Item>
@@ -131,7 +131,7 @@ export default function Navbar() {
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
-                            {user == null ? "Sign in" : "Sign out"}
+                            {token == null ? "Sign in" : "Sign out"}
                           </Link>
                         )}
                       </Menu.Item>

@@ -10,10 +10,16 @@ export default function ProductCard({ item }) {
   const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
-  const user=useSelector(state=>state.auth.loggedInUser)
+  const token=useSelector(state=>state.auth.loggedInUserToken)
   const error=useSelector(state=>state.cart.error)
 
   function handleClick() {
+
+    //throw error if you not logged in
+    if(token===null){
+      displayNotification('Pls login to add items to cart', 'error')
+      return;
+    }
     const cartItem = {
       title: title,
       productID:product_id,
@@ -22,8 +28,7 @@ export default function ProductCard({ item }) {
       color:color,
       price:price,
       brand:brand,
-      quantity:1,
-      userID:user.id
+      quantity:1
     };
     dispatch(addToCartAsync(cartItem));
     if(error){

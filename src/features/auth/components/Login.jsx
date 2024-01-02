@@ -3,7 +3,7 @@ import logo from "../../../assets/logo.png";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { checkUserAsync } from "../authSlice";
+import { loginUserAsync } from "../authSlice";
 import queryString from "query-string";
 import { displayNotification } from "../../../utils/displayNotification";
 import { useEffect } from "react";
@@ -16,7 +16,7 @@ export default function Login() {
   } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.loggedInUser);
+  const token = useSelector((state) => state.auth.loggedInUserToken);
   const error = useSelector((state) => state.auth.error);
 
   const location = useLocation();
@@ -41,7 +41,7 @@ export default function Login() {
 
   return (
     <>
-      {user && handleSuccessLogin()}
+      {token && handleSuccessLogin()}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -78,7 +78,7 @@ export default function Login() {
             className="space-y-6"
             onSubmit={handleSubmit((data) => {
               dispatch(
-                checkUserAsync({ email: data.email, password: data.password })
+                loginUserAsync({ email: data.email, password: data.password })
               );
             })}
           >

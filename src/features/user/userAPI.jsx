@@ -3,7 +3,7 @@ export function updateUser(update) {
     const updateUserAsync = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/user/" + update.id,
+          "http://localhost:8080/user/",
           {
             method: "PATCH",
             body: JSON.stringify(update),
@@ -29,7 +29,7 @@ export function fetchLoggedInUser() {
   return new Promise((resolve, reject) => {
     const fetchLoggedInUserAsync = async () => {
       try {
-        const response = await fetch("http://localhost:8080/user/");
+        const response = await fetch("http://localhost:8080/user/own");
 
         if (!response.ok) {
           throw new Error("something went wrong, try again");

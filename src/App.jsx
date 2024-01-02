@@ -17,11 +17,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import { fetchLoggedInUserAsync } from "./features/user/userSlice";
+import { Link } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Welcome to Homepage</div>,
+    element: <div>Welcome to Homepage<h2><Link to="/products">Go to Products</Link></h2></div>,
   },
   {
     path: "/products",
@@ -95,14 +96,17 @@ const router = createBrowserRouter([
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.loggedInUser);
+  const token = useSelector((state) => state.auth.loggedInUserToken);
 
   useEffect(() => {
-    if (user) {
+    if (token) {
       dispatch(fetchItemsByUserIdAsync());
       dispatch(fetchLoggedInUserAsync());
     }
-  }, [dispatch, user]);
+    else{
+      console.log("token not found");
+    }
+  }, [dispatch, token]);
 
   return (
     <>
