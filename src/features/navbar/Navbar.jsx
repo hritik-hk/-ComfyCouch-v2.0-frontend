@@ -23,6 +23,7 @@ export default function Navbar() {
   const token = useSelector((state) => state.auth.loggedInUserToken);
 
   return (
+    <div className="w-full fixed top-0 left-0 z-50">
     <Disclosure as="nav" className="bg-orange-600">
       {({ open }) => (
         <>
@@ -165,5 +166,6 @@ export default function Navbar() {
         </>
       )}
     </Disclosure>
+    </div>
   );
 }

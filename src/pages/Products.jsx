@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
-import Navbar from "../features/navbar/Navbar";
 import MobileFilters from "../features/product/components/MobileFIlters";
 import Filters from "../features/product/components/Filters";
+import Navbar from "../features/navbar/Navbar";
 import ProductList from "../features/product/components/ProductList";
 import Pagination from "../features/common/Pagination";
 import { Menu, Transition } from "@headlessui/react";

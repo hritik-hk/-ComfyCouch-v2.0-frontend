@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { resetCartAsync } from "../features/cart/cartSlice";
 import { resetOrder } from "../features/order/orderSlice";
+import Navbar from "../features/navbar/Navbar";
 
 export default function OrderSuccessPage() {
   const params = useParams();
@@ -20,6 +21,7 @@ export default function OrderSuccessPage() {
 
   return (
     <>
+      <Navbar />
       {!params.id && <Navigate to="/" replace={true} />}
         <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
           <div className=" mx-auto flex flex-col items-center justify-center">

@@ -1,3 +1,4 @@
+import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Login from "./features/auth/components/Login";
 import Signup from "./features/auth/components/Signup";
@@ -18,19 +19,11 @@ import { useEffect } from "react";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import { fetchLoggedInUserAsync } from "./features/user/userSlice";
 import { checkAuthAsync } from "./features/auth/authSlice";
-import { Link } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <div>
-        Welcome to Homepage
-        <h2>
-          <Link to="/products">Go to Products</Link>
-        </h2>
-      </div>
-    ),
+    element: <Home />,
   },
   {
     path: "/products",

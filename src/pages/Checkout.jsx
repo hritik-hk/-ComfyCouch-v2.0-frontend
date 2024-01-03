@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserAsync } from "../features/user/userSlice";
 import { createOrderAsync } from "../features/order/orderSlice";
 import { Link, Navigate } from "react-router-dom";
+import Navbar from "../features/navbar/Navbar";
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -53,12 +54,16 @@ export default function Checkout() {
 
   return (
     <>
+      <Navbar />
       {!cartItems.length && <Navigate to="/" replace={true} />}
       {orderPlaced && orderPlaced.paymentMethod === 'cash' && (
         <Navigate
           to={`/order-success/${orderPlaced.id}`}
           replace={true}
         ></Navigate>
+      )}
+      {orderPlaced && orderPlaced.paymentMethod === 'card' && (
+        <Navigate to={`/stripe-checkout/`} replace={true}></Navigate>
       )}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">

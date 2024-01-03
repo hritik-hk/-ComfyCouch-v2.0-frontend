@@ -1,3 +1,4 @@
+import Navbar from "../features/navbar/Navbar";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import StarRatings from "react-star-ratings";
@@ -53,6 +54,7 @@ export default function ProductDetails() {
 
   return (
     <>
+      <Navbar />
       {status === "loading" ? (
         <div className="flex justify-center items-center w-full h-screen sm:col-span-3">
           <Bars
