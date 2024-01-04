@@ -39,7 +39,7 @@ export default function Products() {
     dispatch(fetchCategoriesAsync())
     dispatch(fetchBrandsAsync())
     dispatch(fetchColorsAsync())
-  },[])
+  },[dispatch])
 
   const filters = [
     {
