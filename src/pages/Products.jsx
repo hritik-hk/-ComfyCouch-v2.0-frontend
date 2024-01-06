@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import MobileFilters from "../features/product/components/MobileFIlters";
 import Filters from "../features/product/components/Filters";
 import Navbar from "../features/navbar/Navbar";
+import Footer from "../features/common/Footer";
 import ProductList from "../features/product/components/ProductList";
 import Pagination from "../features/common/Pagination";
 import { Menu, Transition } from "@headlessui/react";
@@ -159,6 +160,7 @@ export default function Products() {
           </main>
         </div>
       </div>
+      <Footer hiddenForSm={false} />
     </>
   );
 }

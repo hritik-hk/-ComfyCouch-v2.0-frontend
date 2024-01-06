@@ -11,7 +11,6 @@ import OrderSuccessPage from "./pages/OrderSuccessPage";
 import OrderDetail from "./features/order/components/OrderDetail";
 import OrderHistory from "./features/order/components/OrderHistory";
 import UserProfile from "./features/user/components/UserProfile";
-import Footer from "./features/common/Footer";
 import Logout from "./features/auth/components/Logout";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Notification from "./features/common/Notification";
@@ -116,7 +115,6 @@ function App() {
     <>
       <Notification />
       {userChecked && <RouterProvider router={router} />}
-      <Footer/>
     </>
   );
 }

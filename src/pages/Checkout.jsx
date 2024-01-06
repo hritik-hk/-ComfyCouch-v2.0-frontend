@@ -5,6 +5,7 @@ import { updateUserAsync } from "../features/user/userSlice";
 import { createOrderAsync } from "../features/order/orderSlice";
 import { Link, Navigate } from "react-router-dom";
 import Navbar from "../features/navbar/Navbar";
+import Footer from "../features/common/Footer";
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -426,6 +427,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+      <Footer hiddenForSm={false} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import Navbar from "../features/navbar/Navbar";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import { RadioGroup, Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
@@ -9,6 +9,9 @@ import { fetchProductByIdAsync } from "../features/product/productSlice";
 import { Bars } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { fetchVariantIdByColor } from "../features/product/productAPI";
+import { addToCartAsync } from "../features/cart/cartSlice";
+import { displayNotification } from "../utils/displayNotification";
+import Footer from "../features/common/Footer";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -18,7 +21,9 @@ export default function ProductDetails() {
   const params = useParams();
 
   const dispatch = useDispatch();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
+  const [show, setShow] = useState(false);
 
   // fetch product details
   useEffect(() => {
@@ -26,7 +31,10 @@ export default function ProductDetails() {
   }, [dispatch, params]);
 
   const selectedProduct = useSelector((state) => state.product.selectedProduct);
+  const userCart = useSelector((state) => state.cart.cartItems);
   const status = useSelector((state) => state.product.status);
+  const token = useSelector((state) => state.auth.loggedInUserToken);
+  const error = useSelector((state) => state.cart.error);
 
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedImg, setSelectedImg] = useState(null);
@@ -47,16 +55,55 @@ export default function ProductDetails() {
     }
   }, [selectedProduct]);
 
-  async function handleColor(productID,color) {
-    const {variant_id}= await fetchVariantIdByColor(productID,color);
+  useEffect(() => {
+    if (
+      selectedProduct &&
+      userCart.find(
+        (item) => item.variantID === selectedProduct.selectedVariant.variant_id
+      )
+    ) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }, [userCart, selectedProduct]);
+
+  async function handleColor(productID, color) {
+    const { variant_id } = await fetchVariantIdByColor(productID, color);
     navigate(`/product-detail/${productID}/${variant_id}`);
+  }
+
+  function handleAddToCart(e) {
+    e.preventDefault();
+
+    //throw error if you not logged in
+    if (token === null) {
+      displayNotification("Pls login to add items to cart", "error");
+      return;
+    }
+    const variant = selectedProduct.selectedVariant;
+    const cartItem = {
+      title: variant.title,
+      productID: variant.product_id,
+      variantID: variant.variant_id,
+      thumbnail: variant.thumbnail,
+      color: variant.color,
+      price: variant.price,
+      brand: variant.brand,
+      quantity: 1,
+    };
+    dispatch(addToCartAsync(cartItem));
+
+    if (error) {
+      displayNotification("something went wrong, plz try again", "error");
+    }
   }
 
   return (
     <>
       <Navbar />
       {status === "loading" ? (
-        <div className="flex justify-center items-center w-full h-screen sm:col-span-3">
+        <div className="mt-[64px] flex justify-center items-center w-full h-screen sm:col-span-3">
           <Bars
             height="100"
             width="100"
@@ -69,7 +116,7 @@ export default function ProductDetails() {
         </div>
       ) : null}
       {selectedProduct && (
-        <div className="bg-white">
+        <div className="bg-white mt-[64px]">
           <div className="pt-6">
             <nav aria-label="Breadcrumb">
               <ol
@@ -206,7 +253,8 @@ export default function ProductDetails() {
                                     className="cursor-pointer"
                                     onClick={() =>
                                       handleColor(
-                                        selectedProduct.productDetail.product_id,
+                                        selectedProduct.productDetail
+                                          .product_id,
                                         item.color
                                       )
                                     }
@@ -236,12 +284,27 @@ export default function ProductDetails() {
                         </RadioGroup>
                       )}
                     </div>
-                    <button
-                      type="submit"
-                      className="mt-10 flex w-1/2 items-center justify-center rounded-md border border-transparent bg-orange-600 px-8 py-3 text-base font-medium text-white hover:bg-red-600"
-                    >
-                      Add to Cart
-                    </button>
+                    {show ? (
+                      <div className="mt-10 flex justify-start">
+                        <button className="mx-3 bg-transparent text-green-700 font-semibold py-2 px-4 border cursor-default ">
+                          Added
+                        </button>
+                        <Link
+                          to="/cart"
+                          className="mx-3 flex items-center justify-center rounded-md border border-transparent bg-orange-600 px-8 py-3 text-base font-medium text-white hover:bg-red-600"
+                        >
+                          Go to Cart
+                        </Link>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={(e) => handleAddToCart(e)}
+                        type="submit"
+                        className="mt-10 flex w-1/2 items-center justify-center rounded-md border border-transparent bg-orange-600 px-8 py-3 text-base font-medium text-white hover:bg-red-600"
+                      >
+                        Add to Cart
+                      </button>
+                    )}
                   </form>
                 </div>
 
@@ -330,7 +393,7 @@ export default function ProductDetails() {
                                     numberOfStars={5}
                                     name="rating"
                                     starDimension="20px"
-                                    starSpacing="1px"
+                                    stselectedProductarSpacing="1px"
                                     isSelectable={true}
                                     changeRating={(rating) =>
                                       setUserRating(rating)
@@ -383,6 +446,7 @@ export default function ProductDetails() {
           </div>
         </div>
       )}
+      <Footer hiddenForSm={false} />
     </>
   );
 }

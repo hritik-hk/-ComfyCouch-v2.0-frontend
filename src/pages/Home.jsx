@@ -1,5 +1,6 @@
 import banner from "../assets/hero-banner.jpg";
 import Navbar from "../features/navbar/Navbar";
+import Footer from "../features/common/Footer";
 import { Link } from "react-router-dom";
 
 export default function Home() {
@@ -89,6 +90,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

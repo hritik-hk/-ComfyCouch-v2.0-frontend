@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import Navbar from "../../navbar/Navbar";
+import Footer from "../../common/Footer";
 
 export default function OrderDetail() {
   const { id } = useParams();
@@ -15,6 +17,7 @@ export default function OrderDetail() {
 
   return (
     <>
+      <Navbar />
       <div className="mx-auto">
         <div className="text-4xl font-medium text-center py-4">
           Orders Details
@@ -57,6 +60,7 @@ export default function OrderDetail() {
             })}
         </div>
       </div>
+      <Footer hiddenForSm={false} />
     </>
   );
 }

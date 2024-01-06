@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCartAsync } from "../../cart/cartSlice";
 import { Link } from "react-router-dom";
@@ -10,11 +10,20 @@ export default function ProductCard({ item }) {
   const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
+  const userCart= useSelector(state=>state.cart.cartItems)
   const token=useSelector(state=>state.auth.loggedInUserToken)
   const error=useSelector(state=>state.cart.error)
 
-  function handleClick() {
+  useEffect(()=>{
+    if(userCart.find((item)=>item.variantID===variant_id)){
+      setShow(true);
+    }
+    else{
+      setShow(false);
+    }
+  },[userCart,variant_id])
 
+  function handleClick() {
     //throw error if you not logged in
     if(token===null){
       displayNotification('Pls login to add items to cart', 'error')
@@ -31,11 +40,9 @@ export default function ProductCard({ item }) {
       quantity:1
     };
     dispatch(addToCartAsync(cartItem));
+
     if(error){
       displayNotification('something went wrong, plz try again', 'error')
-    }
-    else{
-      setShow((show) => !show)
     }
   }
 
@@ -74,7 +81,7 @@ export default function ProductCard({ item }) {
         <div className="flex justify-between pr-4 mt-1">
           <h2 className="font-semibbold">₹ {price.toLocaleString('en-IN')}</h2>
           {show ? (
-            <button className="bg-transparen text-green-700 font-semibold py-2 px-4 border cursor-default ">
+            <button className="bg-transparent text-green-700 font-semibold py-2 px-4 border cursor-default ">
               Added
             </button>
           ) : (
