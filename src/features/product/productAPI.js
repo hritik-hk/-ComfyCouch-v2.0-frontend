@@ -39,14 +39,22 @@ export function fetchProductById({productID,variantID}) {
     });
   }
 
-export async function fetchProductsByFilter(filter) {
-  console.log(filter);
+export async function fetchProductsByFilter({filters,sort,pagination}) {
+  console.log(filters,sort,pagination);
   let queryString = "";
 
-  for (let key in filter) {
-    for (let item of filter[key]) {
+  for (let key in filters) {
+    for (let item of filters[key]) {
       queryString += `${key}=${item}&`;
     }
+  }
+
+  for (let key in sort) {
+    queryString += `${key}=${sort[key]}&`;
+  }
+
+  for (let key in pagination) {
+    queryString += `${key}=${pagination[key]}&`;
   }
 
   console.log(queryString);
@@ -60,8 +68,9 @@ export async function fetchProductsByFilter(filter) {
         );
 
         if (response.ok) {
-          const data = await response.json();
-          resolve(data);
+          const items = await response.json();
+          const totalItems = response.headers.get('X-Total-Count');
+          resolve({items:items,totalItems:totalItems});
         } else {
           throw new Error("Something went wrong");
         }

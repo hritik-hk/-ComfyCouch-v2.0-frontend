@@ -7,7 +7,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 
 
 
-export default function MobileFilters({mobileFiltersOpen,setMobileFiltersOpen,filters}){
+export default function MobileFilters({mobileFiltersOpen,setMobileFiltersOpen,filterList}){
     
     return <>
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -50,7 +50,7 @@ export default function MobileFilters({mobileFiltersOpen,setMobileFiltersOpen,fi
                   {/* Filters */}
                   <form className="mt-4 border-t border-gray-200">
                     <h3 className="sr-only">Categories</h3>
-                    {filters.map((section) => (
+                    {filterList.map((section) => (
                       <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6">
                         {({ open }) => (
                           <>

@@ -1,45 +1,13 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { Disclosure } from "@headlessui/react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { fetchProductsByFilterAsync } from "../productSlice";
 
-export default function Filters({ filters }) {
-  const [filterObj, setFilterObj] = useState({
-    color: [],
-    category: [],
-    brand: [],
-  });
-
-  const dispatch = useDispatch();
-
-
-  const handleFilter = (e, filterName, filterValue) => {
-    setFilterObj((prevFilterObj) => {
-      const updatedFilter = { ...prevFilterObj }
-
-      if (e.target.checked) {
-        // Add filterValue to the filterName's array
-        updatedFilter[filterName] = [...updatedFilter[filterName], filterValue]
-      } else {
-        // Remove filterValue from the filterName's array
-        updatedFilter[filterName] = updatedFilter[filterName].filter(
-          (item) => item !== filterValue
-        );
-      }
-
-      dispatch(fetchProductsByFilterAsync(updatedFilter))
-
-      return updatedFilter;
-    })
-  }
+export default function Filters({ filterList, handleFilter }) {
 
   return (
     <>
       <form className="hidden lg:block">
-  
 
-        {filters.map((section) => (
+        {filterList.map((section) => (
           <Disclosure
             as="div"
             key={section.id}

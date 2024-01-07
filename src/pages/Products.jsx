@@ -8,12 +8,18 @@ import Pagination from "../features/common/Pagination";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, FunnelIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategoriesAsync, fetchColorsAsync, fetchBrandsAsync } from "../features/product/productSlice";
+import {
+  fetchCategoriesAsync,
+  fetchColorsAsync,
+  fetchBrandsAsync,
+  fetchProductsByFilterAsync,
+} from "../features/product/productSlice";
+import { ITEMS_PER_PAGE } from "../features/common/constants";
 
 const sortOptions = [
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { label: "Best Rating", value: "rating", order: "descending" },
+  { label: "Price: Low to High", value: "price", order: "ascending" },
+  { label: "Price: High to Low", value: "price", order: "descending" },
 ];
 
 //for joining classes
@@ -22,45 +28,80 @@ function classNames(...classes) {
 }
 
 export default function Products() {
-  const totalItems = 27; //for testing UI only
-
-  
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState({
+    color: [],
+    category: [],
+    brand: [],
+  });
+  const [sort, setSort] = useState({ _sort: "", _order: "" });
 
+  const dispatch = useDispatch();
 
-  const dispatch=useDispatch()
+  const brands = useSelector((state) => state.product.brands);
+  const colors = useSelector((state) => state.product.colors);
+  const categories = useSelector((state) => state.product.categories);
+  const totalItems = useSelector(state => state.product.totalItems);
 
-  const brands=useSelector(state=>state.product.brands)
-  const colors=useSelector(state=>state.product.colors)
-  const categories=useSelector(state=>state.product.categories)
+  useEffect(() => {
+    dispatch(fetchCategoriesAsync());
+    dispatch(fetchBrandsAsync());
+    dispatch(fetchColorsAsync());
+  }, [dispatch]);
 
   useEffect(()=>{
-    dispatch(fetchCategoriesAsync())
-    dispatch(fetchBrandsAsync())
-    dispatch(fetchColorsAsync())
-  },[dispatch])
+    const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
+    dispatch(fetchProductsByFilterAsync({filters:filters,sort:sort,pagination:pagination}));
+  },[dispatch,filters,sort,page])
 
-  const filters = [
+  const filterList = [
     {
       id: "color",
       name: "Color",
-      options: colors
+      options: colors,
     },
     {
       id: "category",
       name: "Category",
-      options: categories 
+      options: categories,
     },
     {
       id: "brand",
       name: "Brands",
-      options: brands 
+      options: brands,
     },
   ];
 
-  const handlePage = (curr) => setPage(curr);
+
+  const handlePage = (page) => setPage(page);
+
+  const handleFilter = (e, filterName, filterValue) => {
+    setFilters((prevFilters) => {
+      const updatedFilter = { ...prevFilters };
+
+      if (e.target.checked) {
+        // Add filterValue to the filterName's array
+        updatedFilter[filterName] = [...updatedFilter[filterName], filterValue];
+      } else {
+        // Remove filterValue from the filterName's array
+        updatedFilter[filterName] = updatedFilter[filterName].filter(
+          item => item !== filterValue
+        );
+      }
+
+      return updatedFilter;
+    });
+  };
+
+  const handleSort = (option) => {
+    const sort = { _sort: option.value, _order: option.order };
+    console.log({ sort });
+    setSort(sort);
+  };
+
+  
 
   return (
     <>
@@ -71,7 +112,7 @@ export default function Products() {
           <MobileFilters
             mobileFiltersOpen={mobileFiltersOpen}
             setMobileFiltersOpen={setMobileFiltersOpen}
-            filters={filters}
+            filterList={filterList}
           />
 
           <main className="mx-auto lg:mx-11 px-4 sm:px-6 lg:px-8">
@@ -104,20 +145,21 @@ export default function Products() {
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
                         {sortOptions.map((option) => (
-                          <Menu.Item key={option.name}>
+                          <Menu.Item key={option.label}>
                             {({ active }) => (
-                              <a
-                                href={option.href}
+                              <p
+                                onClick={() => handleSort(option)}
                                 className={classNames(
-                                  option.current
+                                  option.value == sort._sort &&
+                                    option.order == sort._order
                                     ? "font-medium text-gray-900"
                                     : "text-gray-500",
                                   active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm"
+                                  "block px-4 py-2 text-sm cursor-pointer"
                                 )}
                               >
-                                {option.name}
-                              </a>
+                                {option.label}
+                              </p>
                             )}
                           </Menu.Item>
                         ))}
@@ -140,7 +182,7 @@ export default function Products() {
             <section aria-labelledby="products-heading" className="pb-24 pt-6">
               <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                 {/* Filters */}
-                <Filters filters={filters} />
+                <Filters filterList={filterList} handleFilter={handleFilter} />
 
                 {/* Product grid */}
                 <div className="lg:col-span-3">
@@ -152,7 +194,6 @@ export default function Products() {
               </div>
               <Pagination
                 page={page}
-                setPage={setPage}
                 handlePage={handlePage}
                 totalItems={totalItems}
               ></Pagination>
