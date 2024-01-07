@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createUser , loginUser, signOut, checkAuth} from "./authAPI";
 
 export const createUserAsync = createAsyncThunk(
-  "user/createUser",
+  "auth/createUser",
   async (userData) => {
     const response = await createUser(userData);
     return response;
@@ -10,7 +10,7 @@ export const createUserAsync = createAsyncThunk(
 );
 
 export const loginUserAsync = createAsyncThunk(
-  "user/loginUser",
+  "auth/loginUser",
   async (userData) => {
     const response = await loginUser(userData);
     return response;
@@ -18,7 +18,7 @@ export const loginUserAsync = createAsyncThunk(
 );
 
 export const checkAuthAsync = createAsyncThunk(
-  "user/checkAuth",
+  "auth/checkAuth",
   async () => {
     const response = await checkAuth();
     return response;
@@ -26,7 +26,7 @@ export const checkAuthAsync = createAsyncThunk(
 );
 
 export const signOutAsync = createAsyncThunk(
-  "user/signOut",
+  "auth/signOut",
   async () => {
     const response = await signOut();
     return response;

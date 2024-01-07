@@ -37,7 +37,7 @@ export default function Filters({ filters }) {
   return (
     <>
       <form className="hidden lg:block">
-        <h3 className="sr-only">Categories</h3>
+  
 
         {filters.map((section) => (
           <Disclosure

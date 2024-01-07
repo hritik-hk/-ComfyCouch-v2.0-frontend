@@ -18,7 +18,7 @@ export default function OrderHistory() {
   return (
     <>
       <Navbar />
-      <div>
+      <div className="mt-[70px]">
         <div className="mt-10 flex flex-col justify-center items-center">
           <h1 className="text-2xl font-semibold">Order history</h1>
           <ul>

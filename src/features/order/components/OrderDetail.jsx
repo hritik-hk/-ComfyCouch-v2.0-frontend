@@ -18,7 +18,7 @@ export default function OrderDetail() {
   return (
     <>
       <Navbar />
-      <div className="mx-auto">
+      <div className="mt-[64px]">
         <div className="text-4xl font-medium text-center py-4">
           Orders Details
         </div>
