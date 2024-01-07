@@ -151,3 +151,30 @@ export function fetchVariantIdByColor(productID,color) {
     getProductVariantByColor();
   });
 }
+
+export function updateProduct(update) {
+  return new Promise((resolve, reject) => {
+    const updateProductAsync = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/product/" + update.product_id,
+          {
+            method: "PATCH",
+            body: JSON.stringify(update),
+            headers: { "content-type": "application/json" },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("something went wrong, try again");
+        }
+
+        const data = await response.json();
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    };
+    updateProductAsync();
+  });
+}

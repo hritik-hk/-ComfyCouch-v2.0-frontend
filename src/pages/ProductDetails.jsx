@@ -5,13 +5,17 @@ import StarRatings from "react-star-ratings";
 import { RadioGroup, Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductByIdAsync } from "../features/product/productSlice";
+import {
+  fetchProductByIdAsync,
+  updateProductAsync,
+} from "../features/product/productSlice";
 import { Bars } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { fetchVariantIdByColor } from "../features/product/productAPI";
 import { addToCartAsync } from "../features/cart/cartSlice";
 import { displayNotification } from "../utils/displayNotification";
 import Footer from "../features/common/Footer";
+import { useForm } from "react-hook-form";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -22,6 +26,13 @@ export default function ProductDetails() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   const [show, setShow] = useState(false);
 
@@ -35,6 +46,7 @@ export default function ProductDetails() {
   const status = useSelector((state) => state.product.status);
   const token = useSelector((state) => state.auth.loggedInUserToken);
   const error = useSelector((state) => state.cart.error);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedImg, setSelectedImg] = useState(null);
@@ -68,6 +80,10 @@ export default function ProductDetails() {
     }
   }, [userCart, selectedProduct]);
 
+  // useEffect(() => {
+  //   register({ name: "rating" }, { value: userRating }); // Register the hidden input field(star rating) with the form
+  // }, [userRating, register]);
+
   async function handleColor(productID, color) {
     const { variant_id } = await fetchVariantIdByColor(productID, color);
     navigate(`/product-detail/${productID}/${variant_id}`);
@@ -97,6 +113,18 @@ export default function ProductDetails() {
     if (error) {
       displayNotification("something went wrong, plz try again", "error");
     }
+  }
+
+  async function addReview(review) {
+    const updatedProduct = {
+      ...selectedProduct.productDetail,
+      customerReviews: [
+        review,
+        ...selectedProduct.productDetail.customerReviews,
+      ],
+    };
+    dispatch(updateProductAsync(updatedProduct));
+    dispatch(fetchProductByIdAsync(params));
   }
 
   return (
@@ -213,7 +241,6 @@ export default function ProductDetails() {
                     ₹{selectedProduct.selectedVariant.price}
                   </p>
 
-                  {/* Reviews */}
                   <div className="mt-6">
                     <div className="flex items-center">
                       <StarRatings
@@ -382,9 +409,20 @@ export default function ProductDetails() {
                             <div className="border-b-2 py-4">
                               <h3 className="text-lg">Submit a Review</h3>
                               <form
-                                onSubmit={() =>
-                                  console.log("add logic to handleSubmit")
-                                }
+                                onSubmit={handleSubmit((review) => {
+                                  if (token) {
+                                    addReview({
+                                      user_name: userInfo.name,
+                                      ...review,
+                                    });
+                                    reset();
+                                  } else {
+                                    displayNotification(
+                                      "Pls login to add review",
+                                      "error"
+                                    );
+                                  }
+                                })}
                               >
                                 <div className="h-[150px] flex flex-col justify-around">
                                   <StarRatings
@@ -395,13 +433,30 @@ export default function ProductDetails() {
                                     starDimension="20px"
                                     stselectedProductarSpacing="1px"
                                     isSelectable={true}
-                                    changeRating={(rating) =>
-                                      setUserRating(rating)
-                                    }
+                                    changeRating={(rating) => {
+                                      setUserRating(rating);
+                                      setValue("rating", rating);
+                                    }}
                                   />
+                                  <input
+                                    type="hidden"
+                                    {...register("rating", {
+                                      required: "rating is required",
+                                      pattern: {
+                                        value: /^[1-5]\d*$/,
+                                        message: "rating must be aleast 1 star",
+                                      },
+                                    })}
+                                  />
+                                  {errors.rating && (
+                                    <p className="text-red-500">
+                                      {errors.rating.message}
+                                    </p>
+                                  )}
                                   <input
                                     className="w-full rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white"
                                     placeholder="write your review here..."
+                                    {...register("review")}
                                   />
                                   <button
                                     type="submit"
