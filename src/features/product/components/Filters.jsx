@@ -1,7 +1,16 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { Disclosure } from "@headlessui/react";
 
-export default function Filters({ filterList, handleFilter }) {
+export default function Filters({ filterList, handleFilter, filters }) {
+
+  function checked(filterName, filterValue){
+    if(filters[filterName].find(item=>item===filterValue)){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 
   return (
     <>
@@ -38,7 +47,7 @@ export default function Filters({ filterList, handleFilter }) {
                           name={`${section.id}[]`}
                           defaultValue={option.value}
                           type="checkbox"
-                          defaultChecked={option.checked}
+                          defaultChecked={checked(section.id,option.value)}
                           onChange={(e) =>
                             handleFilter(e, section.id, e.target.value)
                           }

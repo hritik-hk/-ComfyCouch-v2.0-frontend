@@ -90,7 +90,7 @@ export default function Products() {
           item => item !== filterValue
         );
       }
-
+      setPage(1);//update page to first page
       return updatedFilter;
     });
   };
@@ -113,6 +113,8 @@ export default function Products() {
             mobileFiltersOpen={mobileFiltersOpen}
             setMobileFiltersOpen={setMobileFiltersOpen}
             filterList={filterList}
+            handleFilter={handleFilter}
+            filters={filters}
           />
 
           <main className="mx-auto lg:mx-11 px-4 sm:px-6 lg:px-8">
@@ -182,7 +184,11 @@ export default function Products() {
             <section aria-labelledby="products-heading" className="pb-24 pt-6">
               <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                 {/* Filters */}
-                <Filters filterList={filterList} handleFilter={handleFilter} />
+                <Filters 
+                filterList={filterList} 
+                handleFilter={handleFilter} 
+                filters={filters} 
+                />
 
                 {/* Product grid */}
                 <div className="lg:col-span-3">
