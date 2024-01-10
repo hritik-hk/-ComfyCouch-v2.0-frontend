@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserAsync } from "../features/user/userSlice";
 import { createOrderAsync } from "../features/order/orderSlice";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate} from "react-router-dom";
 import Navbar from "../features/navbar/Navbar";
 import Footer from "../features/common/Footer";
 
@@ -33,6 +33,30 @@ export default function Checkout() {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("cash");
 
+  useEffect(() => {
+    if (orderPlaced && orderPlaced.paymentMethod === "card"){
+      const makePayment = async () => {
+        try {
+          const response = await fetch("http://localhost:8080/create-checkout-session", {
+            method: "POST",
+            body: JSON.stringify({orderId:orderPlaced.id,cartItems:orderPlaced.cartItems}),
+            headers: { "content-type": "application/json" },
+          });
+  
+          if (!response.ok) {
+            throw new Error("something went wrong, try again");
+          }
+  
+          const data = await response.json();
+          window.location.href=data.url;
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      makePayment();
+    }
+  }, [orderPlaced]);
+
   const handleAddress = (e) => {
     setSelectedAddress(userInfo.addresses[e.target.value]);
   };
@@ -57,15 +81,17 @@ export default function Checkout() {
     <>
       <Navbar />
       {!cartItems.length && <Navigate to="/" replace={true} />}
-      {orderPlaced && orderPlaced.paymentMethod === 'cash' && (
+      {orderPlaced && orderPlaced.paymentMethod === "cash" && (
         <Navigate
           to={`/order-success/${orderPlaced.id}`}
           replace={true}
         ></Navigate>
       )}
-      {orderPlaced && orderPlaced.paymentMethod === 'card' && (
-        <Navigate to={`/stripe-checkout/`} replace={true}></Navigate>
-      )}
+      {orderPlaced &&
+        orderPlaced.paymentMethod === "card" &&
+        orderPlaced.paymentStatus === "completed" && (
+          <Navigate to={`/order-success/${orderPlaced.id}`} replace={true}></Navigate>
+        )}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
           <div className="lg:col-span-3">

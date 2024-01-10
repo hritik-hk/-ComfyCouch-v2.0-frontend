@@ -24,7 +24,7 @@ export default function OrderSuccessPage() {
     <>
       <Navbar />
       {!params.id && <Navigate to="/" replace={true} />}
-      <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+     {user && <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
         <div className=" mx-auto flex flex-col items-center justify-center">
           <CheckCircleIcon className="h-24 w-24 text-orange-600" />
 
@@ -46,7 +46,7 @@ export default function OrderSuccessPage() {
             </Link>
           </div>
         </div>
-      </main>
+      </main>}
       <Footer hiddenForSm={false} />
     </>
   );
