@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCartAsync } from "../cartSlice";
 import { Link } from "react-router-dom";
 import { deleteInCartAsync } from "../cartSlice";
+import emptyCart from "../../../assets/empty-cart.png";
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -26,12 +27,18 @@ export default function Cart() {
 
   return (
     <>
-      <div className="mt-[64px]">
+    {cartItems.length===0?
+      <div className="h-[75vh] w-full flex justify-center items-center">
+      <img src={emptyCart} alt="empty cart" />
+      </div>
+      :<div className="mt-[64px]">
         <div className="lg:grid lg:gap-x-8 lg:gap-y-10 lg:grid-cols-4 mx-auto bg-white max-w-[1500px] px-4 sm:px-6 lg:px-8">
           <div className="sm:col-span-3 border-t border-gray-200 px-4 py-6 sm:px-6">
             <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
               Cart
             </h1>
+            
+            
             <div className="sm:h-2/3 sm:overflow-y-auto">
               <ul className="-my-6 divide-y divide-gray-200">
                 {cartItems.map((item) => (
@@ -168,6 +175,7 @@ export default function Cart() {
           </div>
         </div>
       </div>
+    }
     </>
   );
 }

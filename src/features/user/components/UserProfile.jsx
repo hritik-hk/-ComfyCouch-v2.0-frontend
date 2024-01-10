@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserAsync } from "../userSlice";
 import { useForm } from "react-hook-form";
+import Navbar from "../../navbar/Navbar";
+import Footer from "../../common/Footer";
 
 export default function UserProfile() {
   const dispatch = useDispatch();
@@ -52,8 +54,9 @@ export default function UserProfile() {
 
   return (
     <>
+      <Navbar />
       {userInfo && (
-        <div>
+        <div className="mt-[64px]">
           <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
               <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
@@ -271,11 +274,17 @@ export default function UserProfile() {
                     </div>
 
                     <div className="mt-6 flex items-center justify-end gap-x-6">
-                      <button
+                    <button
                         type="submit"
                         className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Add Address
+                      </button>
+                      <button
+                      onClick={()=>setShowAddAddressForm(false)}
+                        className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        cancel
                       </button>
                     </div>
                   </div>
@@ -538,6 +547,8 @@ export default function UserProfile() {
           </div>
         </div>
       )}
+      <div className="hidden sm:block h-[25vh]"></div>
+      <Footer hiddenForSm={false} />
     </>
   );
 }

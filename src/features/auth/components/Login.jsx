@@ -55,7 +55,7 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <div className="flex flex-col items-center justify-center">
+          {/* <div className="flex flex-col items-center justify-center">
             <button className="px-4 py-2 border flex gap-2 border-black rounded-lg text-black hover:bg-slate-100 transition duration-150">
               <img
                 className="w-6 h-6"
@@ -72,7 +72,8 @@ export default function Login() {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
+
           <form
             noValidate
             className="space-y-6"

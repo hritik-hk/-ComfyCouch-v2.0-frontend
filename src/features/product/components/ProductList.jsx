@@ -29,7 +29,7 @@ export default function ProductList() {
           />
         </div>
       ) : status === "idle" && products.length == 0 ? (
-        <div className="h-full flex flex-col  justify-center items-center w-full sm:col-span-3">
+        <div className="h-[50vh] flex flex-col  justify-center items-center w-full sm:col-span-3">
           <img
             className="h-40 w-32 md:h-72 md:w-64"
             src={product404}
