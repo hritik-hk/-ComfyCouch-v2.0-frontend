@@ -6,7 +6,7 @@ import {
   fetchBrands,
   fetchColors,
   fetchCategories,
-  updateProduct
+  updateProduct,
 } from "./productAPI";
 
 //action fetchAllProductAsync
@@ -74,11 +74,20 @@ export const productSlice = createSlice({
     brands: [],
     categories: [],
     selectedProduct: null,
-    totalItems:0,
+    totalItems: 0,
+    filtersApplied: {
+      color: [],
+      category: [],
+      brand: [],
+    },
     status: "idle",
   },
 
-  reducers: {},
+  reducers: {
+    updateFilters: (state, action) => {
+      state.filtersApplied = action.payload;
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -161,5 +170,7 @@ export const productSlice = createSlice({
       });
   },
 });
+
+export const { updateFilters } = productSlice.actions;
 
 export default productSlice.reducer;

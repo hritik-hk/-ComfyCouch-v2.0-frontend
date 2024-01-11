@@ -2,34 +2,46 @@ import banner from "../assets/hero-banner.jpg";
 import Navbar from "../features/navbar/Navbar";
 import Footer from "../features/common/Footer";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchCategoriesAsync } from "../features/product/productSlice";
+import {
+  updateFilters,
+  fetchProductsByFilterAsync,
+} from "../features/product/productSlice";
+import { ITEMS_PER_PAGE } from "../features/common/constants";
 
 export default function Home() {
-  const categories = [
-    {
-      value: "sofas-seating",
-      label: "Sofas & Seating",
-      thumbnail:
-        "https://ii1.pepperfry.com/media/catalog/product/a/d/494x544/adria-fabric-chaise-lounger-in-bold-yellow-colour-adria-fabric-chaise-lounger-in-bold-yellow-colour-xoe0y9.jpg",
-    },
-    {
-      value: "home-decor",
-      label: "Home Decor",
-      thumbnail:
-        "https://ii1.pepperfry.com/media/catalog/product/m/u/494x544/musician--set-of-2--iron-human-figurine-by-craft-tree-musician--set-of-2--iron-human-figurine-by-cra-f8xwwm.jpg",
-    },
-    {
-      value: "beanbag",
-      label: "Bean Bag",
-      thumbnail:
-        "https://ii1.pepperfry.com/media/catalog/product/f/u/494x544/fusion-xxxl-leatherette-bean-bag-with-beans-in-black---multicolour-fusion-xxxl-leatherette-bean-bag--n6kj7t.jpg",
-    },
-    {
-      value: "gaming-chair",
-      label: "Gaming Chair",
-      thumbnail:
-        "https://ii1.pepperfry.com/media/catalog/product/m/o/494x544/monster-ultimate--t--gaming-chair-in-black---grey-colour-by-green-soul-monster-ultimate--t--gaming-c-cyemju.jpg",
-    },
-  ];
+  const dispatch = useDispatch();
+
+  const initialFilters = {
+    color: [],
+    category: [],
+    brand: [],
+  };
+
+  const categories = useSelector((state) => state.product.categories);
+
+  useEffect(() => {
+    dispatch(fetchCategoriesAsync());
+    dispatch(updateFilters(initialFilters));
+  }, [dispatch]);
+
+  const handleCategory = (filterValue) => {
+    let update = { ...initialFilters };
+    update.category.push(filterValue);
+
+    const pagination = { _page: 1, _limit: ITEMS_PER_PAGE };
+    const sort = { _sort: "", _order: "" };
+    dispatch(
+      fetchProductsByFilterAsync({
+        filters: update,
+        sort: sort,
+        pagination: pagination,
+      })
+    );
+    dispatch(updateFilters(update));
+  };
 
   return (
     <>
@@ -61,34 +73,40 @@ export default function Home() {
 
       <div className="mt-10">
         <h1 className="text-2xl mb-5 text-center md:text-5xl">CATEGORIES</h1>
-        <div>
-          <div className="flex flex-wrap justify-evenly">
-            {categories.map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  className="flex flex-col justify-center items-center mx-4 relative my-5 rounded-xl"
-                >
-                
-                    <div className="h-full w-full absolute rounded-xl bg-black opacity-25 flex justify-center items-center px-2">
-                    </div>
-                    <div className="h-full w-full absolute flex justify-center items-center">
-                    <p className="text-white text-xl font-medium tracking-wide md:text-3xl">{item.label}</p>
-                    </div>
-                        
-                  
-                    <div className="h-32 w-36 md:h-52 md:w-64 overflow-hidden rounded-md border border-gray-200">
-                      <img
-                        src={item.thumbnail}
-                        alt="image"
-                        className="h-full w-full object-cover object-bottom"
-                      />
-                    </div>
-                </div>
-              );
-            })}
+        {categories && (
+          <div>
+            <div className="flex flex-wrap justify-evenly">
+              {categories.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="flex flex-col justify-center items-center mx-4 relative my-5 rounded-xl"
+                  >
+                    <Link
+                      to="/products"
+                      onClick={() => handleCategory(item.value)}
+                    >
+                      <div className="h-full w-full absolute rounded-xl bg-black opacity-25 flex justify-center items-center px-2"></div>
+                      <div className="h-full w-full absolute flex justify-center items-center">
+                        <p className="text-white text-xl font-medium tracking-wide md:text-3xl">
+                          {item.label}
+                        </p>
+                      </div>
+
+                      <div className="h-32 w-36 md:h-52 md:w-64 overflow-hidden rounded-md border border-gray-200">
+                        <img
+                          src={item.thumbnail}
+                          alt="image"
+                          className="h-full w-full object-cover object-bottom"
+                        />
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <Footer hiddenForSm={false} />
     </>

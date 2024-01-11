@@ -2,17 +2,19 @@ import { Fragment } from "react";
 import { Disclosure, Transition, Dialog } from "@headlessui/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useSelector } from "react-redux";
 
 export default function MobileFilters({
   mobileFiltersOpen,
   setMobileFiltersOpen,
   filterList,
-  handleFilter,
-  filters
+  handleFilter
 }) {
 
+  const filtersApplied= useSelector(state=>state.product.filtersApplied);
+
   function checked(filterName, filterValue){
-    if(filters[filterName].find(item=>item===filterValue)){
+    if(filtersApplied[filterName].find(item=>item===filterValue)){
       return true;
     }else{
       return false;

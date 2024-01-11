@@ -1,10 +1,13 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { Disclosure } from "@headlessui/react";
+import { useSelector } from "react-redux";
 
-export default function Filters({ filterList, handleFilter, filters }) {
+export default function Filters({ filterList, handleFilter }) {
+
+  const filtersApplied= useSelector(state=>state.product.filtersApplied);
 
   function checked(filterName, filterValue){
-    if(filters[filterName].find(item=>item===filterValue)){
+    if(filtersApplied[filterName].find(item=>item===filterValue)){
       return true;
     }else{
       return false;

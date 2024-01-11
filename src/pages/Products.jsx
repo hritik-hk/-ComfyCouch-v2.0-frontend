@@ -13,6 +13,7 @@ import {
   fetchColorsAsync,
   fetchBrandsAsync,
   fetchProductsByFilterAsync,
+  updateFilters
 } from "../features/product/productSlice";
 import { ITEMS_PER_PAGE } from "../features/common/constants";
 
@@ -31,11 +32,7 @@ export default function Products() {
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [filters, setFilters] = useState({
-    color: [],
-    category: [],
-    brand: [],
-  });
+ 
   const [sort, setSort] = useState({ _sort: "", _order: "" });
 
   const dispatch = useDispatch();
@@ -44,6 +41,7 @@ export default function Products() {
   const colors = useSelector((state) => state.product.colors);
   const categories = useSelector((state) => state.product.categories);
   const totalItems = useSelector(state => state.product.totalItems);
+  const filtersApplied= useSelector(state => state.product.filtersApplied);
 
   useEffect(() => {
     dispatch(fetchCategoriesAsync());
@@ -53,8 +51,8 @@ export default function Products() {
 
   useEffect(()=>{
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    dispatch(fetchProductsByFilterAsync({filters:filters,sort:sort,pagination:pagination}));
-  },[dispatch,filters,sort,page])
+    dispatch(fetchProductsByFilterAsync({filters:filtersApplied,sort:sort,pagination:pagination}));
+  },[dispatch,filtersApplied,sort,page])
 
   const filterList = [
     {
@@ -78,8 +76,8 @@ export default function Products() {
   const handlePage = (page) => setPage(page);
 
   const handleFilter = (e, filterName, filterValue) => {
-    setFilters((prevFilters) => {
-      const updatedFilter = { ...prevFilters };
+
+      const updatedFilter = { ...filtersApplied };
 
       if (e.target.checked) {
         // Add filterValue to the filterName's array
@@ -91,8 +89,9 @@ export default function Products() {
         );
       }
       setPage(1);//update page to first page
-      return updatedFilter;
-    });
+
+      dispatch(updateFilters(updatedFilter));
+  
   };
 
   const handleSort = (option) => {
@@ -114,7 +113,6 @@ export default function Products() {
             setMobileFiltersOpen={setMobileFiltersOpen}
             filterList={filterList}
             handleFilter={handleFilter}
-            filters={filters}
           />
 
           <main className="mx-auto lg:mx-11 px-4 sm:px-6 lg:px-8">
@@ -186,8 +184,7 @@ export default function Products() {
                 {/* Filters */}
                 <Filters 
                 filterList={filterList} 
-                handleFilter={handleFilter} 
-                filters={filters} 
+                handleFilter={handleFilter}
                 />
 
                 {/* Product grid */}
