@@ -37,6 +37,7 @@ export default function ProductDetails() {
   const [show, setShow] = useState(false);
 
   const selectedProduct = useSelector((state) => state.product.selectedProduct);
+  const updatedProduct = useSelector((state) => state.product.updatedProduct);
   const userCart = useSelector((state) => state.cart.cartItems);
   const status = useSelector((state) => state.product.status);
   const token = useSelector((state) => state.auth.loggedInUserToken);
@@ -51,7 +52,7 @@ export default function ProductDetails() {
   // fetch product details
   useEffect(() => {
     dispatch(fetchProductByIdAsync(params));
-  }, [dispatch, params]);
+  }, [dispatch, params,updatedProduct]);
 
   //initalize states, variables
   useEffect(() => {
@@ -124,7 +125,6 @@ export default function ProductDetails() {
       ],
     };
     dispatch(updateProductAsync(updatedProduct));
-    dispatch(fetchProductByIdAsync(params));
   }
 
   return (

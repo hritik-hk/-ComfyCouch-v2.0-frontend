@@ -74,6 +74,7 @@ export const productSlice = createSlice({
     brands: [],
     categories: [],
     selectedProduct: null,
+    updatedProduct: null,
     totalItems: 0,
     filtersApplied: {
       color: [],
@@ -161,8 +162,9 @@ export const productSlice = createSlice({
       .addCase(updateProductAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(updateProductAsync.fulfilled, (state) => {
+      .addCase(updateProductAsync.fulfilled, (state, action) => {
         state.status = "idle";
+        state.updatedProduct = action.payload;
       })
       .addCase(updateProductAsync.rejected, (state, action) => {
         state.status = "idle";
