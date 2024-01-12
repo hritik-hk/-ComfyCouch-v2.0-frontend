@@ -37,7 +37,7 @@ export default function Checkout() {
     if (orderPlaced && orderPlaced.paymentMethod === "card"){
       const makePayment = async () => {
         try {
-          const response = await fetch("http://localhost:8080/create-checkout-session", {
+          const response = await fetch("/create-checkout-session", {
             method: "POST",
             body: JSON.stringify({orderId:orderPlaced.id,cartItems:orderPlaced.cartItems}),
             headers: { "content-type": "application/json" },

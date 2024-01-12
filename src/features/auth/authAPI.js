@@ -2,7 +2,7 @@ export function createUser(userData){
     return new Promise((resolve,reject)=>{
         const createUserAsync= async()=>{
             try{
-                const response= await fetch('http://localhost:8080/api/users',{
+                const response= await fetch('/api/users',{
                     method:'POST',
                     body:JSON.stringify(userData),
                     headers:{'content-type':'application/json'}
@@ -26,7 +26,7 @@ export function loginUser(loginData){
     return new Promise((resolve,reject)=>{
         const  loginUserAsync= async()=>{
             try{
-                const response= await fetch("http://localhost:8080/api/auth/login",{
+                const response= await fetch("/api/auth/login",{
                     method:"POST",
                     body:JSON.stringify(loginData),
                     headers:{'content-type':'application/json'}
@@ -54,7 +54,7 @@ export function signOut(){
     return new Promise((resolve,reject)=>{
         const signOutAsync= async()=>{
             try{
-                const response = await fetch('http://localhost:8080/api/auth/logout');
+                const response = await fetch('/api/auth/logout');
                 if (!response.ok) {
                     const message= 'something went wrong, try again';
                     throw new Error(message);
@@ -74,7 +74,7 @@ export function checkAuth(){
     return new Promise((resolve,reject)=>{
         const  checkAuthAsync= async()=>{
             try{
-                const response= await fetch("http://localhost:8080/api/auth/check");
+                const response= await fetch("/api/auth/check");
                 const data= await response.json();
 
                 if(!response.ok){

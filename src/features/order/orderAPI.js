@@ -2,7 +2,7 @@ export function createOrder(order){
     return new Promise((resolve, reject) => {
         const createOrderAsync = async () => {
           try {
-            const response = await fetch("http://localhost:8080/api/order", {
+            const response = await fetch("/api/order", {
               method: "POST",
               body: JSON.stringify(order),
               headers: { "content-type": "application/json" },

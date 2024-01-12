@@ -1,18 +1,12 @@
 import ProductCard from "./ProductCard";
-import { fetchAllProductAsync } from "../productSlice";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ColorRing } from "react-loader-spinner";
 import product404 from "../../../assets/product404.webp";
 
 export default function ProductList() {
-  const dispatch = useDispatch();
+  
   const products = useSelector((state) => state.product.productList);
   const status = useSelector((state) => state.product.status);
-
-  useEffect(() => {
-    dispatch(fetchAllProductAsync());
-  }, [dispatch]);
 
   return (
     <>

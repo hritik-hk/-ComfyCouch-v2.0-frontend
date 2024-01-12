@@ -2,7 +2,7 @@ export function fetchAllProducts() {
   return new Promise((resolve, reject) => {
     const getAllProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/variant");
+        const response = await fetch("/api/variant");
 
         if (response.ok) {
           const data = await response.json();
@@ -22,7 +22,7 @@ export function fetchProductById({productID,variantID}) {
     return new Promise((resolve, reject) => {
       const getProductById = async () => {
         try {
-          const res = await fetch(`http://localhost:8080/api/product/${productID}/${variantID}`)
+          const res = await fetch(`/api/product/${productID}/${variantID}`)
   
           if (res.ok) {
             const productDetail = await res.json();
@@ -64,7 +64,7 @@ export async function fetchProductsByFilter({filters,sort,pagination}) {
     const getProductsByFilter = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/variant?" + queryString
+          "/api/variant?" + queryString
         );
 
         if (response.ok) {
@@ -86,7 +86,7 @@ export async function fetchCategories() {
   return new Promise((resolve, reject) => {
     const getCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/category");
+        const response = await fetch("/api/category");
 
         if (response.ok) {
           const data = await response.json();
@@ -106,7 +106,7 @@ export async function fetchColors() {
   return new Promise((resolve, reject) => {
     const getColors = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/color");
+        const response = await fetch("/api/color");
 
         if (response.ok) {
           const data = await response.json();
@@ -126,7 +126,7 @@ export async function fetchBrands() {
   return new Promise((resolve, reject) => {
     const getBrands = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/brand");
+        const response = await fetch("/api/brand");
 
         if (response.ok) {
           const data = await response.json();
@@ -146,7 +146,7 @@ export function fetchVariantIdByColor(productID,color) {
   return new Promise((resolve, reject) => {
     const getProductVariantByColor = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/variant/${productID}/${color}`);
+        const res = await fetch(`/api/variant/${productID}/${color}`);
         if (res.ok) {
           const variantID = await res.json();
           resolve(variantID);
@@ -166,7 +166,7 @@ export function updateProduct(update) {
     const updateProductAsync = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/product/" + update.product_id,
+          "/api/product/" + update.product_id,
           {
             method: "PATCH",
             body: JSON.stringify(update),
