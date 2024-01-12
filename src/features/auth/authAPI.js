@@ -2,7 +2,7 @@ export function createUser(userData){
     return new Promise((resolve,reject)=>{
         const createUserAsync= async()=>{
             try{
-                const response= await fetch('/api/users',{
+                const response= await fetch('/api/auth/signup',{
                     method:'POST',
                     body:JSON.stringify(userData),
                     headers:{'content-type':'application/json'}

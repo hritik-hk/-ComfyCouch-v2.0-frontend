@@ -1,9 +1,10 @@
 /* eslint-disable no-useless-escape */
 import logo from "../../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUserAsync } from "../authSlice";
+import { useState } from "react";
 
 export default function Signup() {
   const {
@@ -12,10 +13,15 @@ export default function Signup() {
     formState: { errors },
   } = useForm();
 
+  
+  const [userCreated, setUserCreated] = useState(false);
+  const authErrors = useSelector((state) => state.auth.error);
+
   const dispatch = useDispatch();
 
   return (
     <>
+      {userCreated && !authErrors && <Navigate to="/login" replace={true}></Navigate>}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -55,13 +61,14 @@ export default function Signup() {
             onSubmit={handleSubmit((data) => {
               dispatch(
                 createUserAsync({
-                  username: data.username,
+                  name: data.username,
                   email: data.email,
                   password: data.password,
                   addresses: [],
                   role: 'user',
                 })
               );
+              setUserCreated(true);
             })}
           >
             <div>
@@ -78,7 +85,7 @@ export default function Signup() {
                     required: "username is required",
                   })}
                   type="text"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {errors.username && (
                   <p className="text-red-500">{errors.username.message}</p>
@@ -104,7 +111,7 @@ export default function Signup() {
                     },
                   })}
                   type="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {errors.email && (
                   <p className="text-red-500">{errors.email.message}</p>
@@ -133,7 +140,7 @@ export default function Signup() {
                     },
                   })}
                   type="password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {errors.password && (
                   <p className="text-red-500">{errors.password.message}</p>
@@ -157,7 +164,7 @@ export default function Signup() {
                       "password does not match",
                   })}
                   type="password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
                 {errors.confirmPassword && (
                   <p className="text-red-500">
