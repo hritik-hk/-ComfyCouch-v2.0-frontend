@@ -567,7 +567,8 @@ export default function UserProfile() {
           )}
         </div>
       )}
-      <div className="hidden sm:block h-[25vh]"></div>
+      <div className="h-[10vh]"></div>
+      <div className="hidden sm:block h-[30vh]"></div>
       <Footer hiddenForSm={false} />
     </>
   );
