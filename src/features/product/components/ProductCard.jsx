@@ -26,7 +26,7 @@ export default function ProductCard({ item }) {
   function handleClick() {
     //throw error if you not logged in
     if(token===null){
-      displayNotification('Pls login to add items to cart', 'error')
+      displayNotification('Pls login to add items to cart', 'error');
       return;
     }
     const cartItem = {
@@ -42,7 +42,9 @@ export default function ProductCard({ item }) {
     dispatch(addToCartAsync(cartItem));
 
     if(error){
-      displayNotification('something went wrong, plz try again', 'error')
+      displayNotification('something went wrong, plz try again', 'error');
+    }else{
+      displayNotification('item added to cart', 'success');
     }
   }
 

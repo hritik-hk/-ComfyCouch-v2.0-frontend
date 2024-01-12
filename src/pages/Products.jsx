@@ -16,6 +16,7 @@ import {
   updateFilters
 } from "../features/product/productSlice";
 import { ITEMS_PER_PAGE } from "../features/common/constants";
+import { ColorRing } from "react-loader-spinner";
 
 const sortOptions = [
   { label: "Best Rating", value: "rating", order: "descending" },
@@ -42,6 +43,7 @@ export default function Products() {
   const categories = useSelector((state) => state.product.categories);
   const totalItems = useSelector(state => state.product.totalItems);
   const filtersApplied= useSelector(state => state.product.filtersApplied);
+  const status = useSelector((state) => state.product.status);
 
   useEffect(() => {
     dispatch(fetchCategoriesAsync());
@@ -105,6 +107,18 @@ export default function Products() {
   return (
     <>
       <Navbar />
+      {status==='loading' ? (
+        <div className="h-[75vh] flex justify-center items-center w-full sm:col-span-3">
+          <ColorRing
+            height="100"
+            width="100"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            visible={true}
+            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+          />
+        </div>
+      ) :
       <div className="bg-white">
         <div>
           {/* Mobile filter dialog */}
@@ -204,6 +218,7 @@ export default function Products() {
           </main>
         </div>
       </div>
+      }
       <Footer hiddenForSm={false} />
     </>
   );

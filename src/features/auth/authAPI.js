@@ -35,7 +35,7 @@ export function loginUser(loginData){
                 const data= await response.json();
 
                 if(!response.ok){
-                    const message= data.error || 'something went wrong, try again';
+                    const message= data.msg || 'something went wrong, try again';
                     throw new Error(message);
                 }
                 

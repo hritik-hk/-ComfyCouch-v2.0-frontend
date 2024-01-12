@@ -89,12 +89,10 @@ export const authSlice = createSlice({
         state.status = "idle"
         state.loggedInUserToken=action.payload
         state.userChecked=true //checks user is authenticated when browser is refreshed
-        state.error=null
       })
-      .addCase(checkAuthAsync.rejected, (state,action) => {
+      .addCase(checkAuthAsync.rejected, (state) => {
         state.status = "idle"
         state.userChecked=true
-        state.error=action.error.message
       })
   },
 })
