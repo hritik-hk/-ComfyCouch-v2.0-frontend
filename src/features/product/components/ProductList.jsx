@@ -2,7 +2,7 @@ import ProductCard from "./ProductCard";
 import { fetchAllProductAsync } from "../productSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Bars } from "react-loader-spinner";
+import { ColorRing } from "react-loader-spinner";
 import product404 from "../../../assets/product404.webp";
 
 export default function ProductList() {
@@ -18,14 +18,13 @@ export default function ProductList() {
     <>
       {status === "loading" ? (
         <div className="flex justify-center items-center w-full sm:col-span-3">
-          <Bars
+          <ColorRing
             height="100"
             width="100"
-            color="#f57242"
-            ariaLabel="bars-loading"
             wrapperStyle={{}}
-            wrapperClass=""
+            wrapperClass="color-ring-wrapper"
             visible={true}
+            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
           />
         </div>
       ) : status === "idle" && products.length == 0 ? (

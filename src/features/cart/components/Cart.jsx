@@ -39,7 +39,7 @@ export default function Cart() {
             </h1>
             
             
-            <div className="sm:h-2/3 sm:overflow-y-auto">
+            <div className="mb-[250px] sm:mb-0 sm:h-[60vh] sm:overflow-y-auto">
               <ul className="-my-6 divide-y divide-gray-200">
                 {cartItems.map((item) => (
                   <li key={item.variantID} className="flex py-6 pr-7">

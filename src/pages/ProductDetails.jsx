@@ -9,7 +9,7 @@ import {
   fetchProductByIdAsync,
   updateProductAsync,
 } from "../features/product/productSlice";
-import { Bars } from "react-loader-spinner";
+import { ColorRing } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { fetchVariantIdByColor } from "../features/product/productAPI";
 import { addToCartAsync } from "../features/cart/cartSlice";
@@ -132,14 +132,13 @@ export default function ProductDetails() {
       <Navbar />
       {status === "loading" ? (
         <div className="mt-[64px] flex justify-center items-center w-full h-screen sm:col-span-3">
-          <Bars
+           <ColorRing
             height="100"
             width="100"
-            color="#f57242"
-            ariaLabel="bars-loading"
             wrapperStyle={{}}
-            wrapperClass=""
+            wrapperClass="color-ring-wrapper"
             visible={true}
+            colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
           />
         </div>
       ) : null}

@@ -22,7 +22,7 @@ export default function OrderDetail() {
         <div className="text-4xl font-medium text-center py-4">
           Orders Details
         </div>
-        <div className="grid md:grid-cols-4 md:gap-y-2">
+        <div className="grid md:grid-cols-4 md:gap-y-2 md:mb-[260px]">
           {order &&
             order.cartItems.map((item) => {
               return (

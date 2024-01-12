@@ -54,8 +54,13 @@ export function signOut(){
     return new Promise((resolve,reject)=>{
         const signOutAsync= async()=>{
             try{
-                //backend work, just testing front-end here
-                resolve('success, userId')
+                const response = await fetch('http://localhost:8080/api/auth/logout');
+                if (!response.ok) {
+                    const message= 'something went wrong, try again';
+                    throw new Error(message);
+                  }
+
+                resolve({msg:"success"});
             }
             catch(error){
                 reject(error)
